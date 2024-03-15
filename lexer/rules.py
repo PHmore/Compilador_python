@@ -27,8 +27,10 @@ def ID(expression):
 def NUMBER(expression):
     patternA = re.compile("^([0-9])*(.|,)?([0-9])*$")
     patternB = re.compile("(^[0-9]*)(.|,?)([0-9]*)$")
-    patternC = re.compile("^[0-9]*[.|,]?[0-9]*$")
-    return re.findall(patternC,expression)
+    patternC = re.compile("^[0-9]*.|,?[0-9]*$")
+    patternD = re.compile("^/d*[.|,]?/d*$")
+    patternE = re.compile("^[0-9]*[.|,]?[0-9]*$")
+    return re.findall(patternE,expression)
 
 # Temos um problema pois o _ não é lido
 expression = "Hello-world"
