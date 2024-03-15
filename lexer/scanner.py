@@ -1,0 +1,1 @@
+# Aqui criaremos a classe scanner a qual chamará as funções do rules 
