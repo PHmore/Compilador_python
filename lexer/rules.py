@@ -3,14 +3,6 @@
 
 # Devemos primeiramente estudar as regras de sintaxé do python e classifica-las bem como criar o regex correspondente para cada uma
 
-# Rules:
-
-# Não podemos começar um indentificador com número ou caracter não alfabetico;
-
-# Não podemos usar palavras reservadas
-
-# Talvez usaremos orientação a objetos para criar as funções de análise
-
 ### Definição do autômato
 # devemos começar definindo as 5 tuplas do autômato isto é
 # S = conjunto de estados finito no reconhecedor junto com o estado de erro
@@ -29,5 +21,26 @@ def ID(expression):
     pattern = re.compile('^[A-Za-z]*')
     return re.findall(pattern,expression)
 
-expression = "Helloworld"
+# Aqui mostramos os diferentes tipos de pattern mudando apenas as ()
+# Observação se usamos () é find é separado se usarmos [] é feito uma união ao que já foi encontrado
+# Neste caso os números são lidos com . e ,
+def NUMBER(expression):
+    patternA = re.compile("^([0-9])*(.|,)?([0-9])*$")
+    patternB = re.compile("(^[0-9]*)(.|,?)([0-9]*)$")
+    patternC = re.compile("^[0-9]*[.|,]?[0-9]*$")
+    return re.findall(patternC,expression)
+
+# Temos um problema pois o _ não é lido
+expression = "Hello-world"
 print(ID(expression))
+expression = "1234,56"
+print(NUMBER(expression))
+
+
+# Rules:
+
+# Não podemos começar um indentificador com número ou caracter não alfabetico;
+
+# Não podemos usar palavras reservadas
+
+# Talvez usaremos orientação a objetos para criar as funções de análise
