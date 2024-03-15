@@ -1,2 +1,2 @@
-# Compilador_js
+# Compilador
 Faremos um compilador para a disciplina de compiladores
