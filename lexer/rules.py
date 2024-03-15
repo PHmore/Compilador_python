@@ -18,7 +18,8 @@ import re
 # Aqui já temos um pensamento para podermos descartar expressões que não começam com caracteres alfabeticos
 # Deve se pensar se salvaremos a string toda e comparamos as palavras reservadas ou usarmos um pensamento de automato e verificamos se a leitura de letra por letra resultam em uma palavra reservada
 def ID(expression):
-    pattern = re.compile('^[A-Za-z]*')
+    # A frase deve estar do ínicio até o fim da linha caso contenha algum caracter não tratado não dará match
+    pattern = re.compile('^[A-Za-z]*$')
     return re.findall(pattern,expression)
 
 # Aqui mostramos os diferentes tipos de pattern mudando apenas as ()
@@ -33,7 +34,7 @@ def NUMBER(expression):
     return re.findall(patternE,expression)
 
 # Temos um problema pois o _ não é lido
-expression = "Hello-world"
+expression = "heLloWorld"
 print(ID(expression))
 expression = "1234,56"
 print(NUMBER(expression))
