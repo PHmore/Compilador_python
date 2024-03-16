@@ -19,8 +19,13 @@ import re
 # Deve se pensar se salvaremos a string toda e comparamos as palavras reservadas ou usarmos um pensamento de automato e verificamos se a leitura de letra por letra resultam em uma palavra reservada
 def ID(expression):
     # A frase deve estar do ínicio até o fim da linha caso contenha algum caracter não tratado não dará match
-    pattern = re.compile('^[A-Za-z]*$')
-    return re.findall(pattern,expression)
+    pattern = re.compile('/^[A-Za-z_]+$/')
+    result = re.findall(pattern,expression)
+    if result:
+        print('It is a ID')
+    else:
+        print('Erro')
+    return result
 
 # Aqui mostramos os diferentes tipos de pattern mudando apenas as ()
 # Observação se usamos () é find é separado se usarmos [] é feito uma união ao que já foi encontrado
@@ -31,14 +36,21 @@ def NUMBER(expression):
     patternC = re.compile("^[0-9]*.|,?[0-9]*$")
     patternD = re.compile("^/d*[.|,]?/d*$")
     patternE = re.compile("^[0-9]*[.|,]?[0-9]*$")
-    return re.findall(patternE,expression)
+    result = re.findall(patternE,expression)
+    if result:
+        print('It is a number')
+    else:
+        print('Erro')
+    return result
+
+
 
 # Temos um problema pois o _ não é lido
-expression = "heLloWorld"
+expression = "h_eLl_o_Wo0rld"
 print(ID(expression))
-expression = "1234,56"
+expression = "123.56"
 print(NUMBER(expression))
-
+expression = "#expression coment"
 
 # Rules:
 
