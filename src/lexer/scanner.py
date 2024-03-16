@@ -1,13 +1,37 @@
-"""# Aqui criaremos a classe scanner a qual chamará as funções do rules 
+# Aqui criaremos a classe scanner a qual chamará as funções do rules 
+
+import re
+import rules as rules
+import TOKEN as TOKEN
+
+def REGEX(code):
+    while code:
+        match = None
+        for tk_type, pattern in rules.RULES:
+            
+            regex = re.compile(pattern)
+            match = regex.match(code)
+            print(match)
+            if match:
+                value = match.group(0)
+                if tk_type != 'WHITESPACE':
+                    TOKEN(tk_type,value)
+                code = code[match.end():]
+                break
+
+        if not match:
+            raise ValueError('Caractere inválido: '+ code[0])
+    return
+
 
 fontCode = open('./exemplo/example.py')
 remaingCode = fontCode.readlines()
 
-for token in remaingCode:
-    tokens = token.split()
-    print(tokens)
-    """
+REGEX(remaingCode)
+print()
 
+
+"""
 import re
 
 # Definindo os tokens e padrões regulares correspondentes
@@ -58,3 +82,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+"""
