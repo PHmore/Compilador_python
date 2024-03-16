@@ -1,7 +1,7 @@
 import re
 
 def ola():
-    print             ("Hello world")
+    print             ("\tHello world")
     return 5
 
 ola = ola()

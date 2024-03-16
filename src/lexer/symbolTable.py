@@ -1,0 +1,5 @@
+###
+"""
+Lexema(lido)| token | valor
+"""
+####
