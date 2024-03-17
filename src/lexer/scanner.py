@@ -30,6 +30,9 @@ print (remaingCode)
 
 REGEX(remaingCode)
 
+# Talvez salvar em uma tabela dps 
+# E tentar aplicar um automato finito, pois acho q o mesmo não está sendo feito
+
 """
 import re
 
