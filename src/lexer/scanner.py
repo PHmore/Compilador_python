@@ -1,13 +1,13 @@
 # Aqui criaremos a classe scanner a qual chamará as funções do rules 
 
 import re
-import rules as rules
-import TOKEN as TOKEN
+from rules import *
+from TOKEN import *
 
 def REGEX(code):
     while code:
         match = None
-        for tk_type, pattern in rules.RULES:
+        for tk_type, pattern in RULES:
             
             regex = re.compile(pattern)
             match = regex.match(code)
@@ -25,11 +25,10 @@ def REGEX(code):
 
 
 fontCode = open('./exemplo/example.py')
-remaingCode = fontCode.readlines()
+remaingCode = fontCode.read()
+print (remaingCode)
 
 REGEX(remaingCode)
-print()
-
 
 """
 import re
