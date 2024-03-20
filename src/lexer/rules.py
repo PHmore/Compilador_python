@@ -10,7 +10,7 @@ RULES = [
     ('LPAREN', r'\('),
     ('RPAREN', r'\)'),
     ('ASSIGN', r'='),
-    ('EQUIASSIGN',r'=='),
+    ('EQUIASSIGN', r'=='),
     ('WHITESPACE', r'\s+'),
     ('DOUBLEPOINTS', r':?')
 ]
