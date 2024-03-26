@@ -5,10 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6b80099f-e4ee-4b08-ac6d-e5a3b53d3c67" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/exemplo/example.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lexer/TOKEN.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/lexer/TOKEN.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lexer/rules.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/lexer/rules.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lexer/scanner.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/lexer/scanner.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,7 +39,7 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;LuisFelipe&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/felipekrause/Downloads/compiladores-analisador-lexico-exemplo-1&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/felipekrause/PycharmProjects/MinhaEstanteDeLivros&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
   }
 }</component>
@@ -78,7 +75,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-python-sdk-d68999036c7f-d3b881c8e49f-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-233.14475.56" />
+        <option value="bundled-python-sdk-09665e90c3a7-d3b881c8e49f-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-233.15026.15" />
       </set>
     </attachedChunks>
   </component>
