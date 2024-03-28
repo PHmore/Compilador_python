@@ -1,4 +1,9 @@
-int main(){
-    int x = 4 + 8;
-    return x;
+int somar(int n1, int n2){
+    return n1 + n2;
+}
+
+void main(){
+    int x = 4;
+    int y = 8;
+    printf(somar(x, y));
 }

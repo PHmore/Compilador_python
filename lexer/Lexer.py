@@ -3,6 +3,7 @@ from TOKEN import TOKEN
 
 class Lexer:
     def __init__(self):
+        self.tokens = []
         self.transitions = {
             0: {'letter': 1, 'digit': 2, '+': 6, '-': 7, '*': 8, '/': 9, '=': 11, '<': 12, '>': 13, '(': 14, ')': 15,
                 '{': 16, '}': 17, '[': 18, ']': 19, ';': 20, ',': 21, '.': 22},
@@ -19,8 +20,13 @@ class Lexer:
                                'static', 'const', 'volatile', 'extern', 'register', 'auto', 'signed', 'unsigned',
                                'short', 'long', 'do']
 
+    def cria_token(self, state, value):
+        if state == 1 and value in self.reserved_words:
+            self.tokens.append(TOKEN('RESERVED', value))
+        else:
+            self.tokens.append(TOKEN(self.accepting[state], value))
+
     def lex(self, code):
-        tokens = []
         state = 0
         value = ''
 
@@ -35,12 +41,12 @@ class Lexer:
             if state in self.transitions and input_type in self.transitions[state]:
                 state = self.transitions[state][input_type]
                 value += char
+
+                if char == code[-1]:
+                    self.cria_token(state, value)
             else:
                 if state in self.accepting:
-                    if state == 1 and value in self.reserved_words:
-                        tokens.append(TOKEN('RESERVED', value))
-                    else:
-                        tokens.append(TOKEN(self.accepting[state], value))
+                    self.cria_token(state, value)
                     value = ''
                     state = 0
 
@@ -48,10 +54,4 @@ class Lexer:
                     state = self.transitions[0][input_type]
                     value = char
 
-        if state in self.accepting:
-            if state == 1 and value in self.reserved_words:
-                tokens.append(TOKEN('RESERVED', value))
-            else:
-                tokens.append(TOKEN(self.accepting[state], value))
-
-        return tokens
+        return self.tokens
