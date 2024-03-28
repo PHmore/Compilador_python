@@ -1,16 +1,6 @@
-int somar(int n1, int n2){
-    return n1 + n2;
-}
-
 void main(){
     int x = 4;
-    int y = 8;
-    if (x + y == 12){
-        printf(somar(x, y));
+    if (x != 4){
+        printf("X nao e igual a 4");
     }
-    else{
-        printf("A soma dos valores nao e 12");
-    }
-
-    printf("Programa Finalizado");
 }
