@@ -12,17 +12,17 @@ class Lexer:
             3: {'digit': 5},
             5: {'digit': 5}
         }
-        self.accepting = {1: 'IDENTIFIER', 2: 'INTEGER', 5: 'FLOAT', 6: 'PLUS', 7: 'MINUS', 8: 'TIMES', 9: 'DIVIDE',
-                          11: 'ASSIGN', 12: 'LESS_THAN', 13: 'GREATER_THAN', 14: 'LPAREN', 15: 'RPAREN', 16: 'LBRACE',
-                          17: 'RBRACE', 18: 'LBRACKET', 19: 'RBRACKET', 20: 'SEMICOLON', 21: 'COMMA', 22: 'DOT'}
+        self.accepting = {1: 'IDENTIFIER', 2: 'INTEGER', 5: 'FLOAT', 6: '+', 7: '-', 8: '*', 9: '/',
+                          11: '=', 12: '<', 13: '>', 14: '(', 15: ')', 16: '{',
+                          17: '}', 18: '[', 19: ']', 20: ';', 21: ',', 22: '.'}
         self.reserved_words = ['if', 'else', 'for', 'while', 'int', 'float', 'double', 'char', 'return', 'main', 'void',
                                'switch', 'case', 'break', 'continue', 'typedef', 'struct', 'union', 'enum', 'sizeof',
                                'static', 'const', 'volatile', 'extern', 'register', 'auto', 'signed', 'unsigned',
                                'short', 'long', 'do']
 
     def cria_token(self, state, value):
-        if state == 1 and value in self.reserved_words:
-            self.tokens.append(TOKEN('RESERVED', value))
+        if value in self.reserved_words or value in self.accepting.values():
+            self.tokens.append(TOKEN(type_token=value))
         else:
             self.tokens.append(TOKEN(self.accepting[state], value))
 

@@ -3,7 +3,7 @@ int somar(int n1, int n2){
 }
 
 void main(){
-    int x = 4;
-    int y = 8;
+    int x = 4.6;
+    int y = 8.234;
     printf(somar(x, y));
 }
