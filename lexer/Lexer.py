@@ -6,19 +6,22 @@ class Lexer:
         self.tokens = []
         self.transitions = {
             0: {'letter': 1, 'digit': 2, '+': 6, '-': 7, '*': 8, '/': 9, '=': 11, '<': 12, '>': 13, '(': 14, ')': 15,
-                '{': 16, '}': 17, '[': 18, ']': 19, ';': 20, ',': 21, '.': 22},
+                '{': 16, '}': 17, '[': 18, ']': 19, ';': 20, ',': 21, '.': 22, '"': 23},
             1: {'letter': 1, 'digit': 1},
             2: {'digit': 2, '.': 3, 'letter': 4},
             3: {'digit': 5},
-            5: {'digit': 5}
+            5: {'digit': 5},
+            11: {'=': 10},
+            23: {'"': 24, ' ': 23, 'letter': 23, 'digit': 23, '+': 23, '-': 23, '*': 23, '/': 23, '=': 23, '<': 23,
+                 '>': 23, '(': 23, ')': 23, '{': 23, '}': 23, '[': 23, ']': 23, ';': 23, ',': 23, '.': 23, '%': 23}
         }
-        self.accepting = {1: 'IDENTIFIER', 2: 'INTEGER', 5: 'FLOAT', 6: '+', 7: '-', 8: '*', 9: '/',
+        self.accepting = {1: 'IDENTIFIER', 2: 'INTEGER', 5: 'FLOAT', 6: '+', 7: '-', 8: '*', 9: '/', 10: '==',
                           11: '=', 12: '<', 13: '>', 14: '(', 15: ')', 16: '{',
-                          17: '}', 18: '[', 19: ']', 20: ';', 21: ',', 22: '.'}
+                          17: '}', 18: '[', 19: ']', 20: ';', 21: ',', 22: '.', 24: 'LITERAL'}
         self.reserved_words = ['if', 'else', 'for', 'while', 'int', 'float', 'double', 'char', 'return', 'main', 'void',
                                'switch', 'case', 'break', 'continue', 'typedef', 'struct', 'union', 'enum', 'sizeof',
-                               'static', 'const', 'volatile', 'extern', 'register', 'auto', 'signed', 'unsigned',
-                               'short', 'long', 'do']
+                               'static', 'const', 'volatile', 'extern', 'register', 'auto', 'signed', 'unsigned', 'do',
+                               'short', 'long', 'printf']
 
     def cria_token(self, state, value):
         if value in self.reserved_words or value in self.accepting.values():

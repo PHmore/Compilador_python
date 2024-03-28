@@ -3,7 +3,14 @@ int somar(int n1, int n2){
 }
 
 void main(){
-    int x = 4.6;
-    int y = 8.234;
-    printf(somar(x, y));
+    int x = 4;
+    int y = 8;
+    if (x + y == 12){
+        printf(somar(x, y));
+    }
+    else{
+        printf("A soma dos valores nao e 12");
+    }
+
+    printf("Programa Finalizado");
 }
