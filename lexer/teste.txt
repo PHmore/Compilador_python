@@ -1,6 +1,9 @@
-void main(){
-    int x = 4;
-    if (x != 4){
-        printf("X nao e igual a 4");
+#include
+
+int fatorial(int 2n) {
+    if (n <= 1) {
+        return 1;
+    } else {
+        return n * fatorial(n - 1);
     }
 }

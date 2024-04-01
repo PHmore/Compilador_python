@@ -13,7 +13,7 @@ class Lexer:
         self.tokens = []
         self.transitions = {
             0: {'letter': 1, 'digit': 2, '+': 6, '-': 7, '*': 8, '/': 9, '=': 11, '<': 12, '>': 13, '(': 14, ')': 15,
-                '{': 16, '}': 17, '[': 18, ']': 19, ';': 20, ',': 21, '.': 22, '"': 23, '!': 27},
+                '{': 16, '}': 17, '[': 18, ']': 19, ';': 20, ',': 21, '.': 22, '"': 23, '!': 27, '#': 29},
             1: {'letter': 1, 'digit': 1},
             2: {'digit': 2, '.': 3, 'letter': 4},
             3: {'digit': 5},
@@ -26,13 +26,13 @@ class Lexer:
                  '!': 23},
             27: {'=': 28}
         }
-        self.accepting = {1: 'IDENTIFIER', 2: 'INTEGER', 5: 'FLOAT', 6: '+', 7: '-', 8: '*', 9: '/', 10: '==',
+        self.accepting = {1: 'IDENTIFIER', 2: 'INTEGER', 4: 'ERROR', 5: 'FLOAT', 6: '+', 7: '-', 8: '*', 9: '/', 10: '==',
                           11: '=', 12: '<', 13: '>', 14: '(', 15: ')', 16: '{', 17: '}', 18: '[', 19: ']', 20: ';',
-                          21: ',', 22: '.', 24: 'LITERAL', 25: '<=', 26: '>=', 28: '!='}
+                          21: ',', 22: '.', 24: 'LITERAL', 25: '<=', 26: '>=', 28: '!=', 29: '#'}
         self.reserved_words = ['if', 'else', 'for', 'while', 'int', 'float', 'double', 'char', 'return', 'main', 'void',
                                'switch', 'case', 'break', 'continue', 'typedef', 'struct', 'union', 'enum', 'sizeof',
                                'static', 'const', 'volatile', 'extern', 'register', 'auto', 'signed', 'unsigned', 'do',
-                               'short', 'long', 'printf']
+                               'short', 'long', 'printf', 'define']
 
     def cria_token(self, state, value):
         """
