@@ -1,9 +1,13 @@
-#include
+#include <stdio.h>
 
-int fatorial(int 2n) {
-    if (n <= 1) {
-        return 1;
-    } else {
-        return n * fatorial(n - 1);
-    }
+// comentario
+
+// Essa é uma linha de comentário de teste
+
+/* outro teste de comentario */
+
+void main(){
+    int x = 7;
+    int y = 6;
+    printf(x / y);
 }
