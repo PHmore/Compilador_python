@@ -44,6 +44,21 @@ class Lexer:
                                'static', 'const', 'volatile', 'extern', 'register', 'auto', 'signed', 'unsigned', 'do',
                                'short', 'long', 'printf', 'define']
 
+    def define_tipo(self, char):
+        """
+            Verifica de qual tipo é o caracter;
+            :param char: caracter que será avaliado
+            :return input_type: retorna o tipo do caracter
+        """
+        if char.isalpha():
+            tipo = 'letter'
+        elif char.isdigit():
+            tipo = 'digit'
+        else:
+            tipo = char
+
+        return tipo
+
     def cria_token(self, state, value):
         """
             Instancia um objeto TOKEN com o tipo e valor do token extraído do código lido no arquivo .txt;
@@ -65,14 +80,7 @@ class Lexer:
         value = ''
 
         for char in code + ' ':  # laço que lê caracter por caracter do arquivo
-            # Condições para determinar o tipo do caracter que está sendo lido no momento da iteração
-            # e armazena o tipo em input_type
-            if char.isalpha():
-                input_type = 'letter'
-            elif char.isdigit():
-                input_type = 'digit'
-            else:
-                input_type = char
+            input_type = self.define_tipo(char)
 
             # Verifica se ainda há estados a serem atingidos a partir do estado atual
             if state in self.transitions and input_type in self.transitions[state]:
