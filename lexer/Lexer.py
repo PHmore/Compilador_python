@@ -10,7 +10,7 @@ class Lexer:
             Inicializa a lista onde os tokens serão armazenados;
             Define dicionários que representam a tabela do autômato utilizado para gerar os tokens;
         """
-        self.tokens = []
+        self.tokens = []  # Lista com os tokens gerados pela análise léxica
         self.transitions = {
             0: {'letter': 1, 'digit': 2, '+': 6, '-': 7, '*': 8, '/': 9, '=': 11, '<': 12, '>': 13, '(': 14, ')': 15,
                 '{': 16, '}': 17, '[': 18, ']': 19, ';': 20, ',': 21, '.': 22, '"': 23, '!': 27, '#': 29},
@@ -20,7 +20,7 @@ class Lexer:
             5: {'digit': 5},
             9: {'/': 30, '*': 32},
             11: {'=': 10},
-            12: {'=': 25},
+            12: {'=': 25, 'letter': 35},
             13: {'=': 26},
             23: {'"': 24, ' ': 23, 'letter': 23, 'digit': 23, '+': 23, '-': 23, '*': 23, '/': 23, '=': 23, '<': 23,
                  '>': 23, '(': 23, ')': 23, '{': 23, '}': 23, '[': 23, ']': 23, ';': 23, ',': 23, '.': 23, '%': 23,
@@ -33,16 +33,18 @@ class Lexer:
                  '>': 32, '(': 32, ')': 32, '{': 32, '}': 32, '[': 32, ']': 32, ';': 32, ',': 32, '.': 32, '%': 32,
                  '!': 32},
             33: {'/': 31, ' ': 4, 'letter': 4, 'digit': 4, '+': 4, '-': 4, '*': 4, '=': 4, '<': 4, '>': 4, '(': 4,
-                 ')': 4, '{': 4, '}': 4, '[': 4, ']': 4, ';': 4, ',': 4, '.': 4, '%': 4, '!': 4, '\n': 4}
+                 ')': 4, '{': 4, '}': 4, '[': 4, ']': 4, ';': 4, ',': 4, '.': 4, '%': 4, '!': 4, '\n': 4},
+            35: {'letter': 35, '.': 35, '>': 34}
         }
         self.accepting = {1: 'IDENTIFIER', 2: 'INTEGER', 4: 'ERROR', 5: 'FLOAT', 6: '+', 7: '-', 8: '*', 9: '/',
                           10: '==', 11: '=', 12: '<', 13: '>', 14: '(', 15: ')', 16: '{', 17: '}', 18: '[', 19: ']',
-                          20: ';', 21: ',', 22: '.', 24: 'LITERAL', 25: '<=', 26: '>=', 28: '!=', 29: '#', 31: 'COMMENT'
+                          20: ';', 21: ',', 22: '.', 24: 'LITERAL', 25: '<=', 26: '>=', 28: '!=', 29: '#',
+                          31: 'COMMENT', 34: 'LIBRARY'
                           }
         self.reserved_words = ['if', 'else', 'for', 'while', 'int', 'float', 'double', 'char', 'return', 'main', 'void',
                                'switch', 'case', 'break', 'continue', 'typedef', 'struct', 'union', 'enum', 'sizeof',
                                'static', 'const', 'volatile', 'extern', 'register', 'auto', 'signed', 'unsigned', 'do',
-                               'short', 'long', 'printf', 'define']
+                               'short', 'long', 'printf', 'define', 'include']
 
     def define_tipo(self, char):
         """
