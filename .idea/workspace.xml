@@ -6,7 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="6b80099f-e4ee-4b08-ac6d-e5a3b53d3c67" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lexer/Lexer.py" beforeDir="false" afterPath="$PROJECT_DIR$/lexer/Lexer.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lexer/teste.txt" beforeDir="false" afterPath="$PROJECT_DIR$/lexer/teste.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -35,20 +34,20 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Python.DFA.executor&quot;: &quot;Run&quot;,
-    &quot;Python.TOKEN.executor&quot;: &quot;Run&quot;,
-    &quot;Python.scanner (1).executor&quot;: &quot;Run&quot;,
-    &quot;Python.scanner .executor&quot;: &quot;Run&quot;,
-    &quot;Python.scanner.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;LuisFelipe&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/felipekrause/PycharmProjects/Compilador_python&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Python.DFA.executor": "Run",
+    "Python.TOKEN.executor": "Run",
+    "Python.scanner (1).executor": "Run",
+    "Python.scanner .executor": "Run",
+    "Python.scanner.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "LuisFelipe",
+    "last_opened_file_path": "/home/felipekrause/PycharmProjects/Compilador_python",
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$" />
