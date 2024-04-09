@@ -84,7 +84,7 @@ class Lexer:
         """
         state = 0
         value = ''
-
+        code += '\n'
         for char in code + ' ':  # laço que lê caracter por caracter do arquivo
             input_type = self.define_tipo(char)
             print(state," :Estado e valor: ",value);
@@ -92,6 +92,7 @@ class Lexer:
             if state in self.transitions and input_type in self.transitions[state]:
                 state = self.transitions[state][input_type]
                 value += char
+                # print("Ainda há estados")
             # Se não houver mais estados a serem atingidos, entra no "else"
             else:
                 # Se o valor (value) armazenado for estado final
