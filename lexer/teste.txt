@@ -1,12 +1,14 @@
 #include <stdio.h>
-#include  <stdlib.h
+#include  <stdlib.h>
 
 void main(){
+    char nome = 'A';
+    float 34gui = 23.4;
     int x = 7;
     int y = 6;
     printf(x / y);
 
-    if (x > y){
+    if (x <= y){
         return;
     }
 }

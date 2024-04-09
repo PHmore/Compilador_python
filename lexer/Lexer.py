@@ -5,6 +5,7 @@ from TOKEN import TOKEN
 # Declaração da classe Lexer
 class Lexer:
     def __init__(self):
+        # Lembra a tabela de automatos onde cada transição representa uma mudança para um outro estado
         """
             Construtor da classe Lexer;
             Inicializa a lista onde os tokens serão armazenados;
@@ -13,10 +14,12 @@ class Lexer:
         self.tokens = []  # Lista com os tokens gerados pela análise léxica
         self.transitions = {
             0: {'letter': 1, 'digit': 2, '+': 6, '-': 7, '*': 8, '/': 9, '=': 11, '<': 12, '>': 13, '(': 14, ')': 15,
-                '{': 16, '}': 17, '[': 18, ']': 19, ';': 20, ',': 21, '.': 22, '"': 23, '!': 27, '#': 29},
+                '{': 16, '}': 17, '[': 18, ']': 19, ';': 20, ',': 21, '.': 22, '"': 23, '!': 27, '#': 29, '%': 36,
+                '\n': 37, '\t': 38, "'": 39},
             1: {'letter': 1, 'digit': 1},
             2: {'digit': 2, '.': 3, 'letter': 4},
             3: {'digit': 5},
+            4: {'letter': 4, 'digit': 4},
             5: {'digit': 5},
             9: {'/': 30, '*': 32},
             11: {'=': 10},
@@ -31,15 +34,23 @@ class Lexer:
                  '!': 30, '\n': 31},
             32: {' ': 32, 'letter': 32, 'digit': 32, '+': 32, '-': 32, '*': 33, '/': 32, '=': 32, '<': 32,
                  '>': 32, '(': 32, ')': 32, '{': 32, '}': 32, '[': 32, ']': 32, ';': 32, ',': 32, '.': 32, '%': 32,
-                 '!': 32},
-            33: {'/': 31, ' ': 4, 'letter': 4, 'digit': 4, '+': 4, '-': 4, '*': 4, '=': 4, '<': 4, '>': 4, '(': 4,
-                 ')': 4, '{': 4, '}': 4, '[': 4, ']': 4, ';': 4, ',': 4, '.': 4, '%': 4, '!': 4, '\n': 4},
-            35: {'letter': 35, '.': 35, '>': 34}
+                 '!': 32, '?': 32, '\n': 32},
+            33: {'/': 31, ' ': 32, 'letter': 32, 'digit': 32, '+': 32, '-': 32, '*': 32, '=': 32, '<': 32, '>': 32,
+                 '(': 32, ')': 32, '{': 32, '}': 32, '[': 32, ']': 32, ';': 32, ',': 32, '.': 32, '%': 32, '!': 32,
+                 '?': 32, '\n': 32, '\t': 32},
+            35: {'letter': 35, '.': 35, '>': 34},
+            39: {'letter': 40, '/': 40, ' ': 40, 'digit': 40, '+': 40, '-': 40, '*': 40, '=': 40, '<': 40, '>': 40,
+                 '(': 40, ')': 40, '{': 40, '}': 40, '[': 40, ']': 40, ';': 40, ',': 40, '.': 40, '%': 40, '!': 40,
+                 '?': 40},
+            40: {"'": 41, 'letter': 42, '/': 42, ' ': 42, 'digit': 42, '+': 42, '-': 42, '*': 42, '=': 42, '<': 42, '>': 42,
+                 '(': 42, ')': 42, '{': 42, '}': 42, '[': 42, ']': 42, ';': 42, ',': 42, '.': 42, '%': 42, '!': 42,
+                 '?': 42}
         }
-        self.accepting = {1: 'IDENTIFIER', 2: 'INTEGER', 4: 'ERROR', 5: 'FLOAT', 6: '+', 7: '-', 8: '*', 9: '/',
+        self.accepting = {1: 'IDENTIFIER', 2: 'INTEGER', 4: 'IDENTIFIER_ERROR', 5: 'FLOAT', 6: '+', 7: '-', 8: '*', 9: '/',
                           10: '==', 11: '=', 12: '<', 13: '>', 14: '(', 15: ')', 16: '{', 17: '}', 18: '[', 19: ']',
                           20: ';', 21: ',', 22: '.', 24: 'LITERAL', 25: '<=', 26: '>=', 28: '!=', 29: '#',
-                          31: 'COMMENT', 34: 'LIBRARY'
+                          31: 'COMMENT', 32: 'COMMENT_ERROR', 34: 'LIBRARY', 35: 'LIBRARY_ERROR', 37: '\\n', 38: '\\t',
+                          41: 'CHAR', 42: 'CHAR_ERROR'
                           }
         self.reserved_words = ['if', 'else', 'for', 'while', 'int', 'float', 'double', 'char', 'return', 'main', 'void',
                                'switch', 'case', 'break', 'continue', 'typedef', 'struct', 'union', 'enum', 'sizeof',
@@ -52,6 +63,7 @@ class Lexer:
             :param char: caracter que será avaliado
             :return input_type: retorna o tipo do caracter
         """
+        # print(char)
         if char.isalpha():
             tipo = 'letter'
         elif char.isdigit():
@@ -70,7 +82,7 @@ class Lexer:
         if value in self.reserved_words or value in self.accepting.values():
             self.tokens.append(TOKEN(type_token=value))
         else:
-            self.tokens.append(TOKEN(self.accepting[state], value))
+            self.tokens.append(TOKEN(self.accepting[state], value if value != '\n' else ' '))
 
     def lex(self, code):
         """

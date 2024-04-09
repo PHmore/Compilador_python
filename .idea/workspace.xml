@@ -6,6 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="6b80099f-e4ee-4b08-ac6d-e5a3b53d3c67" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lexer/Lexer.py" beforeDir="false" afterPath="$PROJECT_DIR$/lexer/Lexer.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lexer/teste.txt" beforeDir="false" afterPath="$PROJECT_DIR$/lexer/teste.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -45,7 +46,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "LuisFelipe",
     "last_opened_file_path": "/home/felipekrause/PycharmProjects/Compilador_python",
-    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
+    "settings.editor.selected.configurable": "preferences.lookFeel"
   }
 }]]></component>
   <component name="RecentsManager">
