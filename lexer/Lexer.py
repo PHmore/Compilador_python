@@ -30,7 +30,7 @@ class Lexer:
         value = ''
 
         for char in code:
-            print(char)
+            # print(char)
             if char.isalpha():
                 input_type = 'letter'
             elif char.isdigit():
@@ -41,9 +41,10 @@ class Lexer:
             if state in self.transitions and input_type in self.transitions[state]:
                 state = self.transitions[state][input_type]
                 value += char
-                print(value)
-                if state not in self.transitions:
-                    tokens.append(TOKEN('ERROR', value))
+                # print(value)
+
+                # if state not in self.transitions:
+                #     tokens.append(TOKEN('ERROR', value))
 
             else:
                 if state in self.accepting:
