@@ -1,14 +1,22 @@
 #include <stdio.h>
-#include  <stdlib.h>
+#include <stdlib.h>
+
+int par(num){
+    if (num % 2 == 0)
+        return 1;  // 1 seria o caso verdadeiro
+    return 0; //0 seria o caso falso
+}
 
 void main(){
-    char nome = 'A';
-    float 34gui = 23.4;
-    int x = 7;
-    int y = 6;
-    printf(x % y);
+    int i = 5;
+    float f = 3.45;
+    char c = 'G';
 
-    if (x <= y){
-        return;
+    printf(par(i));  //mostra o resultado da função par() para i
+
+    printf("Olá, mundo!");
+
+    for (int j = 0; j < 5; j++){
+        printf("Compilador", j);
     }
 }
