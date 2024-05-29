@@ -114,80 +114,48 @@ F -> T I ( T ) { .. }
 
 """
 
+programa  -> lista_declaracoes
 
-"""
-Claro! Vou mostrar um exemplo bem simples de um analisador sintático descendente recursivo para uma pequena parte da linguagem C, que lida apenas com declarações de variáveis simples.
+lista_declaracoes  -> declaracao | lista_declaracoes declaracao
 
-Vamos considerar a seguinte gramática simplificada:
+declaracao  -> declaracao_variavel | declaracao_funcao
 
-```
-DeclaraçãoVariável -> Tipo Identificador ;
-Tipo -> int | float | char
-Identificador -> [a-zA-Z][a-zA-Z0-9_]*
-```
+declaracao_variavel  -> tipo identificador ';'
 
-E aqui está como você pode implementar isso em pseudocódigo:
+tipo  -> 'int' | 'float' | 'char'
 
-```python
+identificador  -> ID
 
-"""
-# Função principal do analisador sintático
-def analisador_sintatico(codigo_fonte):
+declaracao_funcao  -> tipo identificador '(' parametros ')' '{' lista_instrucoes '}'
 
-    # Feito com analisador léxico
-    tokens = analisador_lexico(codigo_fonte)
-    indice_token_atual = 0
-    while indice_token_atual < len(tokens):
-        # Ver qual o valor do token
-        if tokens[indice_token_atual] == 'int' or tokens[indice_token_atual] == 'float' or tokens[indice_token_atual] == 'char':
-            indice_token_atual = analisa_declaracao_variavel(tokens, indice_token_atual)
-        else:
-            # Se não for uma declaração de variável, emite um erro
-            emite_erro("Esperava uma declaração de variável", tokens[indice_token_atual])
-            break
+parametros  -> lista_parametros | vazio
 
-# Função para analisar uma declaração de variável
-def analisa_declaracao_variavel(tokens, indice_atual):
-    tipo = tokens[indice_atual]  # O primeiro token deve ser o tipo da variável
-    if tipo not in ['int', 'float', 'char']:
-        emite_erro("Tipo de variável inválido", tipo)
-        return indice_atual
+lista_parametros  -> parametro | lista_parametros ',' parametro
 
-    indice_atual += 1  # Avança para o próximo token
-    if indice_atual < len(tokens) and tokens[indice_atual].isalpha():
-        # Se o próximo token for um identificador válido
-        identificador = tokens[indice_atual]
-        if indice_atual + 1 < len(tokens) and tokens[indice_atual + 1] == ';':
-            # Se o token seguinte for um ponto e vírgula, a declaração está completa
-            print("Declaração de variável válida:", tipo, identificador)
-            return indice_atual + 2  # Avança para o token após o ponto e vírgula
-        else:
-            emite_erro("Esperava um ponto e vírgula", tokens[indice_atual + 1])
-            return indice_atual + 1
-    else:
-        emite_erro("Identificador inválido", tokens[indice_atual])
-        return indice_atual
+parametro  -> tipo identificador
 
-# Função para analisar erros
-def emite_erro(mensagem, token):
-    print("Erro:", mensagem, "- Token encontrado:", token)
+lista_instrucoes  -> instrucao | lista_instrucoes instrucao
 
-# Função de exemplo para análise léxica (simplificada)
-def analisador_lexico(codigo_fonte):
-    return codigo_fonte.split()
+instrucao  -> declaracao_variavel | atribuicao | instrucao_condicional | instrucao_loop | retorno | chamada_funcao
 
-# Exemplo de código-fonte
-codigo_fonte = "int x;"
-analisador_sintatico(codigo_fonte)
+atribuicao  -> identificador '=' expressao ';'
 
-"""
-```
+expressao  -> termo | expressao '+' termo | expressao '-' termo
 
-Neste exemplo:
+termo  -> fator | termo '*' fator | termo '/' fator
 
-- `analisador_sintatico()` é a função principal que chama outras funções para analisar diferentes partes do código-fonte.
-- `analisa_declaracao_variavel()` analisa declarações de variáveis, verificando se o tipo e o identificador estão corretos.
-- `emite_erro()` é uma função auxiliar para imprimir mensagens de erro.
-- `analisador_lexico()` é uma função de exemplo para análise léxica, que simplesmente divide o código-fonte em palavras.
+fator  -> identificador | numero | '(' expressao ')'
 
-Este é um exemplo bastante simplificado, mas ilustra os princípios básicos de um analisador sintático descendente recursivo."""
+numero  -> NUM
+
+instrucao_condicional  -> 'if' '(' expressao ')' '{' lista_instrucoes '}' ('else' '{' lista_instrucoes '}')?
+
+instrucao_loop  -> 'while' '(' expressao ')' '{' lista_instrucoes '}'
+
+retorno  -> 'return' expressao ';'
+
+chamada_funcao  -> identificador '(' lista_argumentos ')'
+
+lista_argumentos  -> lista_expressoes | vazio
+
+lista_expressoes  -> expressao | lista_expressoes ',' expressao
