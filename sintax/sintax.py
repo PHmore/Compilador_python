@@ -1,6 +1,65 @@
-# Aparentemente vai ser necessário fazer várias funções para a indentificação da gramática isto se for usar a análise preditiva recursiva
+# Definição da gramática
+
+gramatica = {
+    'Programa': ['DeclaraçãoLista'],
+    'DeclaraçãoLista': ['Declaração', 'Declaração DeclaraçãoLista'],
+    'Declaração': ['DeclaraçãoVariável', 'DeclaraçãoFunção', 'DeclaraçãoEstrutura'],
+    'DeclaraçãoVariável': ['Tipo Identificador ;', 'Tipo Identificador [ Número ] ;'],
+    'DeclaraçãoFunção': ['Tipo Identificador ( ListaParâmetros ) DeclaraçãoComposta'],
+    'DeclaraçãoComposta': ['{ DeclaraçãoLista }'],
+    'Tipo': ['int', 'float', 'char', 'void'],
+    'ListaParâmetros': ['ListaVazia', 'Tipo Identificador', 'Tipo Identificador , ListaParâmetros'],
+    'DeclaraçãoEstrutura': ['struct Identificador { DeclaraçãoLista } ;'],
+    'Expressão': ['ExpressãoAtribuição', 'Expressão , ExpressãoAtribuição'],
+    'ExpressãoAtribuição': ['Identificador = Expressão', 'ExpressãoCondicional'],
+    'ExpressãoCondicional': ['ExpressãoLogica ? Expressão : Expressão'],
+    'ExpressãoLogica': ['ExpressãoLogica || ExpressãoLogica', 'ExpressãoLogica && ExpressãoLogica', 'ExpressãoRelacional'],
+    'ExpressãoRelacional': [
+        'ExpressãoAditiva > ExpressãoAditiva', 
+        'ExpressãoAditiva < ExpressãoAditiva', 
+        'ExpressãoAditiva >= ExpressãoAditiva', 
+        'ExpressãoAditiva <= ExpressãoAditiva', 
+        'ExpressãoAditiva == ExpressãoAditiva', 
+        'ExpressãoAditiva != ExpressãoAditiva'
+    ],
+    'ExpressãoAditiva': ['ExpressãoAditiva + Termo', 'ExpressãoAditiva - Termo', 'Termo'],
+    'Termo': ['Termo * Fator', 'Termo / Fator', 'Fator'],
+    'Fator': ['( Expressão )', 'number', 'ID'],
+    'Identificador': ['ID'],
+    'Número': ['number'],
+    'ListaVazia': ['ε']
+}
+
+
+# Dicionário de símbolos terminais
+simbolos_terminais = {
+    'Operadores': [
+        '+', '-', '*', '/',  # Operadores aritméticos
+        '>', '<', '>=', '<=', '==', '!=',  # Operadores relacionais
+        '||', '&&', '? :',  # Operadores lógicos
+        '='  # Operador de atribuição
+    ],
+    'Operandos': [
+        'Identificador',  # Identificadores
+        'Número',  # Números
+        'int', 'float', 'char', 'void'  # Tipos primitivos
+    ],
+    'Outros Símbolos': [
+        ';', ',', '{', '}', '(', ')', '[', ']',  # Símbolos de pontuação
+        'struct'  # Palavra-chave
+    ]
+}
+
+# Imprimir a tabela de símbolos terminais
+for categoria, simbolos in simbolos_terminais.items():
+    print(f"{categoria}:")
+    for simbolo in simbolos:
+        print(f"  - {simbolo}")
+
+
 
 """
+
 OBS: vazio = £
 
 Uma gramatica livre de contexto deve conter 
