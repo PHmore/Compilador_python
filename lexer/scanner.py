@@ -16,6 +16,12 @@ def test():
     for token in tokens:
         print(f'<{token.type}, {token.value}>')
 
+# Salvando tokens em um txt
+    caminho_do_arquivo = "output.txt"
+    
+    with open(caminho_do_arquivo, 'w') as arquivo:
+        for token in tokens:
+            arquivo.write(f'<{token.type}, {token.value}> ')
 
 # Programa Principal
 test()

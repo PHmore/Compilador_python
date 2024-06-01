@@ -42,7 +42,7 @@ class SLRParser:
             print('Estado atual: ', estado_atual)
 
             proximo_simbolo = entrada[idx]  # Próximo símbolo da entrada
-            print('Próximo simbolo: ', proximo_simbolo)
+            print('Próximo simbolo (lookahead): ', proximo_simbolo)
 
             # Verifica se há uma ação para o estado atual e o próximo símbolo
             acao = self.tabela['Ação'][estado_atual].get(proximo_simbolo)
@@ -59,23 +59,23 @@ class SLRParser:
                 print("Análise sintática concluída com sucesso.")
                 return True
 
-            elif acao.startswith('s'):
+            elif acao.startswith('S'):
                 # Shift: empilha o próximo estado e avança na entrada
                 novo_estado = int(acao[1:])
                 stack.append(proximo_simbolo)
                 stack.append(novo_estado)
                 idx += 1
 
-            elif acao.startswith('r'):
+            elif acao.startswith('R'):
                 # Reduce: aplica a redução utilizando a produção indicada
                 num_producao = int(acao[1:])
                 print('Número de produção: ', num_producao)
                 producao = self.tabela['Productions'][num_producao]
                 print('Produção: ', producao)
 
-                # Remove da pilha o número de símbolos da produção à direita, se não for produção vazia
-                tamanho_direita = len(producao['right'])
-                print('Tamanho da linha de produção: ', tamanho_direita)
+                # Remove da pilha o número de símbolos da produção à direita vezes 2 pq estamos colocando os estados na pilha também, se não for produção vazia
+                tamanho_direita = len(producao['right']) * 2
+                print('Tamanho da linha de produção: ', tamanho_direita/2,' Tamanho a ser removido: ',tamanho_direita)
                 if tamanho_direita > 0:
                     if len(stack) < tamanho_direita:
                         print("Erro: Tentativa de remover mais elementos da pilha do que disponíveis.")
@@ -87,6 +87,8 @@ class SLRParser:
                 if not stack:
                     print("Erro: Pilha vazia após redução.")
                     return False
+                
+                print('Pilha após redução: ',stack)
 
                 estado_atual = stack[-1]
                 print('Estado atual após redução: ', estado_atual)
@@ -96,6 +98,9 @@ class SLRParser:
 
                 proximo_estado = self.tabela['Goto'][estado_atual].get(simbolo_nao_terminal)
                 print('Próximo estado: ', proximo_estado)
+
+                # Adiciona o simbolo não terminal a pilha e o estado atual deve continuar sendo um número
+                stack.append(simbolo_nao_terminal)
 
                 if proximo_estado is None:
                     print("Erro: Estado de goto não encontrado.")
@@ -114,33 +119,7 @@ class SLRParser:
 
 # Tabela de análise SLR
 tabela_slr = {
-    'Ação': {
-        # Estado : { token : ação }
-        
-        0: {'id': 's5','(':'s4',},
-        1: {'+': 's6','$':'acc',},
-        2: {'+': 'r2','*':'s7',')':'r2','$':'r2',},
-        3: {'+': 'r4','*':'r4',')':'r4','$':'r4',},
-        4: {'id': 's5','(':'s4',},
-        5: {'+': 'r6','*':'r6',')':'r6','$':'r6',},
-        6: {'id': 's5','(':'s4',},
-        7: {'id': 's5','(':'s4',},
-        8: {'+': 's6',')':'s11',},
-        9: {'+': 'r1','*':'s7',')':'r1','$':'r1',},
-        10: {'+': 'r3','*':'r3',')':'r3','$':'r3',},
-        11: {'+': 'r5','*':'r5',')':'r5','$':'r5',},
-    },
-
-    'Goto': {
-        # Estado: {'Nterminal':ProxEstado,}
-        
-        0: {'E': 1,'T': 2,'F': 3},
-        4: {'E': 8,'T': 2,'F': 3},
-        6: {'T': 9,'F': 3},
-        7: {'F': 10},
-    },
-
-    'Productions' : {
+    'productions ': {
         1: {'left': 'PROGRAMA', 'right': ['SEÇÃOFUNÇÕES', 'PRINCIPAL']},
         2: {'left': 'SEÇÃOFUNÇÕES', 'right': ['LISTAFUNÇÕES']},
         3: {'left': 'SEÇÃOFUNÇÕES', 'right': ['ε']},
@@ -230,12 +209,76 @@ tabela_slr = {
         87: {'left': 'SINAL', 'right': ['+']},
         88: {'left': 'SINAL', 'right': ['-']},
         89: {'left': 'SINAL', 'right': ['ε']}
-        }
+    },
+
+    'action_table' : {
+        0: {'SEÇÃOFUNÇÕES': 'S1', 'PRINCIPAL': 'S2', 'PROGRAMA': 'G1'},
+        1: {'LISTAFUNÇÕES': 'S3', 'ε': 'S4'},
+        2: {'main': 'S5'},
+        3: {'DECFUNÇÃO': 'S6'},
+        4: {'$': 'ACCEPT'},
+        5: {'(': 'S7'},
+        6: {'TIPORETORNO': 'S8'},
+        7: {'LISTAPARÂMETROS': 'S9', 'ε': 'S10'},
+        8: {'TIPO': 'S11', 'void': 'S12'},
+        9: {'id': 'S13'},
+        10: {')': 'R17'},
+        11: {'TIPOBASE': 'S14'},
+        12: {'(': 'S15'},
+        13: {'{': 'S16'},
+        14: {'char': 'S17', 'float': 'S18', 'int': 'S19', 'boolean': 'S20'},
+        15: {')': 'R60'},
+        16: {'SEÇÃOVARIAVEIS': 'S21', 'SEÇÃOCOMANDOS': 'S22'},
+        17: {'LISTAVARIAVEIS': 'S23', 'ε': 'S24'},
+        18: {'{': 'S25'},
+        19: {'main': 'S26'},
+        20: {'}': 'R29'},
+        21: {'TIPO': 'S27', 'ε': 'S28'},
+        22: {'LISTACOMANDOS': 'S29', 'ε': 'S30'},
+        23: {'identificador': 'S31'},
+        24: {'}': 'R22'},
+        25: {'TIPO': 'S32'},
+        26: {'identificador': 'S33'},
+        27: {'DECFUNÇÃO': 'S34'},
+        28: {'ε': 'R31'}
+    },
+
+    'goto_table' : {
+        0: {'SEÇÃOFUNÇÕES': 1, 'PRINCIPAL': 2, 'PROGRAMA': 1},
+        1: {'LISTAFUNÇÕES': 3, 'ε': 4},
+        2: {'main': 5},
+        3: {'DECFUNÇÃO': 6},
+        4: {'$': 'ACCEPT'},
+        5: {'(': 7},
+        6: {'TIPORETORNO': 8},
+        7: {'LISTAPARÂMETROS': 9, 'ε': 10},
+        8: {'TIPO': 11, 'void': 12},
+        9: {'id': 13},
+        10: {')': 'R17'},
+        11: {'TIPOBASE': 14},
+        12: {'(': 15},
+        13: {'{': 16},
+        14: {'char': 17, 'float': 18, 'int': 19, 'boolean': 20},
+        15: {')': 'R60'},
+        16: {'SEÇÃOVARIAVEIS': 21, 'SEÇÃOCOMANDOS': 22},
+        17: {'LISTAVARIAVEIS': 23, 'ε': 24},
+        18: {'{': 25},
+        19: {'main': 26},
+        20: {'}': 'R29'},
+        21: {'TIPO': 27, 'ε': 28},
+        22: {'LISTACOMANDOS': 29, 'ε': 30},
+        23: {'identificador': 31},
+        24: {'}': 'R22'},
+        25: {'TIPO': 32},
+        26: {'identificador': 33},
+        27: {'DECFUNÇÃO': 34},
+        28: {'ε': 'R31'}
+    }
 
 }
 
 # Tokens de entrada (simplificados para este exemplo)
-tokens = ['int', 'x',';']
+tokens = ['int','identificador', ';']
 
 # Cria o analisador sintático SLR
 parser = SLRParser(tabela_slr)
