@@ -5,7 +5,6 @@ class SLRParser:
     def parse(self, tokens):
         stack = ['$',0]  # Inicializa a pilha com o estado inicial
         entrada = tokens + ['$']  # Adiciona o símbolo de fim de entrada
-        simbolos = []
 
         idx = 0  # Índice para percorrer os tokens de entrada
 
@@ -20,7 +19,6 @@ class SLRParser:
             print('Estado atual: ', estado_atual)
 
             proximo_simbolo = entrada[idx]  # Próximo símbolo da entrada
-            print("Pilha de simbolos: ", simbolos)
             print('Próximo simbolo: ', proximo_simbolo)
 
             # Verifica se há uma ação para o estado atual e o próximo símbolo
@@ -41,9 +39,9 @@ class SLRParser:
             elif acao.startswith('s'):
                 # Shift: empilha o próximo estado e avança na entrada
                 novo_estado = int(acao[1:])
+                stack.append(proximo_simbolo)
                 stack.append(novo_estado)
                 idx += 1
-                simbolos.append(proximo_simbolo)
 
             elif acao.startswith('r'):
                 # Reduce: aplica a redução utilizando a produção indicada

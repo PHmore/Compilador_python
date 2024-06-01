@@ -1,69 +1,153 @@
-Programa -> DeclaraçãoLista
+PROGRAMA → SEÇÃOFUNÇÕES PRINCIPAL
+SEÇÃOFUNÇÕES → LISTAFUNÇÕES | ε
+LISTAFUNÇÕES → DECFUNÇÃO | LISTAFUNÇÕES DECFUNÇÃO
+DECFUNÇÃO → TIPORETORNO id ( PARÂMETROS ) BLOCO
+TIPORETORNO → TIPO | void
+TIPO → TIPOBASE DIMENSÃO
+TIPOBASE → char | float | int | boolean
+DIMENSÃO → DIMENSÃO [ num_int ] | ε
+PARÂMETROS → LISTAPARÂMETROS | ε
+LISTAPARÂMETROS → TIPO id | LISTAPARÂMETROS , TIPO id
+PRINCIPAL → main ( ) BLOCO
+BLOCO → { SEÇÃOVARIAVEIS SEÇÃOCOMANDOS }
+SEÇÃOVARIAVEIS → LISTAVARIAVEIS | ε
+LISTAVARIAVEIS → TIPO LISTAID ; | LISTAVARIAVEIS TIPO LISTAID ;
+LISTAID → identificador | LISTAID , identificador
+SEÇÃOCOMANDOS → LISTACOMANDOS | ε
+LISTACOMANDOS → COMANDO | LISTACOMANDOS COMANDO
+COMANDO → LEITURA | ESCRITA | ATRIBUIÇÃO | FUNÇÃO | SELEÇÃO | ENQUANTO |
+RETORNO
+LEITURA → scanf ( LISTATERMOLEITURA ) ;
+LISTATERMOLEITURA → TERMOLEITURA| LISTATERMOLEITURA , TERMOLEITURA
+TERMOLEITURA → id DIMENSAO2
+DIMENSAO2 → DIMENSAO2 [ EXPR_ADITIVA ] | ε
+ESCRITA → println ( LISTATERMOESCRITA ) ;
+LISTATERMOESCRITA → TERMOESCRITA | LISTATERMOESCRITA , TERMOESCRITA
+TERMOESCRITA → id DIMENSAO2 | CONSTANTE | texto
+SELEÇÃO → if ( EXPRESSÃO ) BLOCO SENÃO
+SENÃO → else BLOCO | ε
+ENQUANTO → while ( EXPRESSÃO ) BLOCO
+ATRIBUIÇÃO → id = COMPLEMENTO ;
+COMPLEMENTO → EXPRESSÃO | FUNÇÃO
+FUNÇÃO → func id ( ARGUMENTOS )
+ARGUMENTOS → LISTAARGUMENTOS | ε
 
-DeclaraçãoLista -> Declaração
-                 | Declaração DeclaraçãoLista
+LISTAARGUMENTOS → EXPRESSÃO | LISTAARGUMENTOS , EXPRESSÃO
+RETORNO → return EXPRESSÃO ;
+EXPRESSÃO → EXPR_OU
+EXPR_OU → EXPR_E | EXPR_OU || EXPR_E
+EXPR_E → EXPR_RELACIONAL | EXPR_E && EXPR_RELACIONAL
+EXPR_RELACIONAL → EXPR_ADITIVA | EXPR_ADITIVA opRelacional EXPR_ADITIVA
+EXPR_ADITIVA → EXPR_MULTIPLICATIVA |
 
-Declaração -> DeclaraçãoVariável
-             | DeclaraçãoFunção
-             | DeclaraçãoEstrutura
+EXPR_ADITIVA OP_ADITIVO EXPR_MULTIPLICATIVA
 
-DeclaraçãoVariável -> Tipo Identificador ';'
-                    | Tipo Identificador '[' Número ']' ';'
+OP_ADITIVO → + | -
+EXPR_MULTIPLICATIVA → FATOR |
 
-DeclaraçãoFunção -> Tipo Identificador '(' ListaParâmetros ')' DeclaraçãoComposta
+EXPR_MULTIPLICATIVA OP_MULTIPLICATIVO FATOR
 
-DeclaraçãoComposta -> '{' DeclaraçãoLista '}'
+OP_MULTIPLICATIVO → * | / | %
+FATOR → SINAL identificador DIMENSAO2 | SINAL CONSTANTE | texto | ! FATOR
+| ( EXPRESSÃO )
+CONSTANTE → num_int | num_dec
+SINAL → + | - | ε
 
-Tipo -> 'int' | 'float' | 'char' | 'void'
+Vamos separar os não terminais dos terminais para a gramática fornecida:
 
-ListaParâmetros -> ListaVazia
-                  | ListaParâmetros
-                  | Tipo Identificador
-                  | Tipo Identificador ',' ListaParâmetros
+### Não Terminais
+Os não terminais são os símbolos que podem ser expandidos em outras produções. Na gramática fornecida, os não terminais são:
 
-DeclaraçãoEstrutura -> 'struct' Identificador '{' DeclaraçãoLista '}' ';'
+- PROGRAMA
+- SEÇÃOFUNÇÕES
+- LISTAFUNÇÕES
+- DECFUNÇÃO
+- TIPORETORNO
+- TIPO
+- TIPOBASE
+- DIMENSÃO
+- PARÂMETROS
+- LISTAPARÂMETROS
+- PRINCIPAL
+- BLOCO
+- SEÇÃOVARIAVEIS
+- LISTAVARIAVEIS
+- LISTAID
+- SEÇÃOCOMANDOS
+- LISTACOMANDOS
+- COMANDO
+- LEITURA
+- LISTATERMOLEITURA
+- TERMOLEITURA
+- DIMENSAO2
+- ESCRITA
+- LISTATERMOESCRITA
+- TERMOESCRITA
+- SELEÇÃO
+- SENÃO
+- ENQUANTO
+- ATRIBUIÇÃO
+- COMPLEMENTO
+- FUNÇÃO
+- ARGUMENTOS
+- LISTAARGUMENTOS
+- RETORNO
+- EXPRESSÃO
+- EXPR_OU
+- EXPR_E
+- EXPR_RELACIONAL
+- EXPR_ADITIVA
+- OP_ADITIVO
+- EXPR_MULTIPLICATIVA
+- OP_MULTIPLICATIVO
+- FATOR
+- CONSTANTE
+- SINAL
 
-Expressão -> ExpressãoAtribuição
-           | Expressão ',' ExpressãoAtribuição
 
-ExpressãoAtribuição -> Identificador '=' Expressão
-                      | ExpressãoCondicional
+### Terminais
+Os terminais são os símbolos que não podem ser expandidos em outras produções. Eles representam os tokens finais que aparecem na linguagem. Na gramática fornecida, os terminais são:
 
-ExpressãoCondicional -> ExpressãoLogica '?' Expressão ':' Expressão
+- `id`
+- `num_int`
+- `num_dec`
+- `char`
+- `float`
+- `int`
+- `boolean`
+- `void`
+- `main`
+- `{`
+- `}`
+- `(`
+- `)`
+- `[`
+- `]`
+- `;`
+- `,`
+- `=`
+- `+`
+- `-`
+- `*`
+- `/`
+- `%`
+- `!`
+- `return`
+- `func`
+- `scanf`
+- `println`
+- `if`
+- `else`
+- `while`
+- `||`
+- `&&`
+- `opRelacional` (um terminal genérico para operadores relacionais)
+- `CONSTANTE`
+- `texto`
+- `$` (símbolo de fim de entrada)
+- `ε` (representa a produção vazia)
 
-ExpressãoLogica -> ExpressãoLogica '||' ExpressãoLogica
-                 | ExpressãoLogica '&&' ExpressãoLogica
-                 | ExpressãoRelacional
-
-ExpressãoRelacional -> ExpressãoAditiva '>' ExpressãoAditiva
-                      | ExpressãoAditiva '<' ExpressãoAditiva
-                      | ExpressãoAditiva '>=' ExpressãoAditiva
-                      | ExpressãoAditiva '<=' ExpressãoAditiva
-                      | ExpressãoAditiva '==' ExpressãoAditiva
-                      | ExpressãoAditiva '!=' ExpressãoAditiva
-
-ExpressãoAditiva -> ExpressãoAditiva '+' Termo
-                   | ExpressãoAditiva '-' Termo
-                   | Termo
-
-Termo -> Termo '*' Fator
-        | Termo '/' Fator
-        | Fator
-
-Fator -> '(' Expressão ')'
-        | Número
-        | Identificador
-
-Identificador -> [a-zA-Z_][a-zA-Z0-9_]*
-Número -> [0-9]+
-
-ListaVazia -> ε
-
-
-
-
-
-
+Com estas listas, você pode distinguir claramente entre os símbolos terminais e não terminais na gramática.
 
 # A analise será feita de forma as descendentes pois são na teoria mais simples de se implementar doq os ascendentes
 
@@ -113,49 +197,3 @@ sendo isto F = função, T = Tipo, I = indentificador, .. = Qlq código dentro
 F -> T I ( T ) { .. }
 
 """
-
-programa  -> lista_declaracoes
-
-lista_declaracoes  -> declaracao | lista_declaracoes declaracao
-
-declaracao  -> declaracao_variavel | declaracao_funcao
-
-declaracao_variavel  -> tipo identificador ';'
-
-tipo  -> 'int' | 'float' | 'char'
-
-identificador  -> ID
-
-declaracao_funcao  -> tipo identificador '(' parametros ')' '{' lista_instrucoes '}'
-
-parametros  -> lista_parametros | vazio
-
-lista_parametros  -> parametro | lista_parametros ',' parametro
-
-parametro  -> tipo identificador
-
-lista_instrucoes  -> instrucao | lista_instrucoes instrucao
-
-instrucao  -> declaracao_variavel | atribuicao | instrucao_condicional | instrucao_loop | retorno | chamada_funcao
-
-atribuicao  -> identificador '=' expressao ';'
-
-expressao  -> termo | expressao '+' termo | expressao '-' termo
-
-termo  -> fator | termo '*' fator | termo '/' fator
-
-fator  -> identificador | numero | '(' expressao ')'
-
-numero  -> NUM
-
-instrucao_condicional  -> 'if' '(' expressao ')' '{' lista_instrucoes '}' ('else' '{' lista_instrucoes '}')?
-
-instrucao_loop  -> 'while' '(' expressao ')' '{' lista_instrucoes '}'
-
-retorno  -> 'return' expressao ';'
-
-chamada_funcao  -> identificador '(' lista_argumentos ')'
-
-lista_argumentos  -> lista_expressoes | vazio
-
-lista_expressoes  -> expressao | lista_expressoes ',' expressao
