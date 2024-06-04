@@ -59,18 +59,18 @@ class SLRParser:
                 print("Análise sintática concluída com sucesso.")
                 return True
 
-            elif acao.startswith('S'):
+            elif acao.startswith('s'):
                 # Shift: empilha o próximo estado e avança na entrada
                 novo_estado = int(acao[1:])
                 stack.append(proximo_simbolo)
                 stack.append(novo_estado)
                 idx += 1
 
-            elif acao.startswith('R'):
+            elif acao.startswith('r'):
                 # Reduce: aplica a redução utilizando a produção indicada
                 num_producao = int(acao[1:])
                 print('Número de produção: ', num_producao)
-                producao = self.tabela['Productions'][num_producao]
+                producao = self.tabela['Produção'][num_producao]
                 print('Produção: ', producao)
 
                 # Remove da pilha o número de símbolos da produção à direita vezes 2 pq estamos colocando os estados na pilha também, se não for produção vazia
@@ -119,43 +119,30 @@ class SLRParser:
 
 # Tabela de análise SLR
 tabela_slr = {
-    'productions ': {
-        1: {'left': 'PROGRAMA', 'right': ['SEÇÃOFUNÇÕES', 'PRINCIPAL']},
-        2: {'left': 'SEÇÃOFUNÇÕES', 'right': ['LISTAFUNÇÕES']},
-        3: {'left': 'SEÇÃOFUNÇÕES', 'right': ['ε']},
-        4: {'left': 'LISTAFUNÇÕES', 'right': ['DECFUNÇÃO']},
-        5: {'left': 'LISTAFUNÇÕES', 'right': ['LISTAFUNÇÕES', 'DECFUNÇÃO']},
-        6: {'left': 'DECFUNÇÃO', 'right': ['TIPORETORNO', 'id', '(', 'PARÂMETROS', ')', 'BLOCO']},
-        7: {'left': 'TIPORETORNO', 'right': ['TIPO']},
-        8: {'left': 'TIPORETORNO', 'right': ['void']},
+    'Ação': {
+        
+        0: {'int': 's3'},
+        1: {'$': 'acc'},
+        2: {'int': 'r1','id':'r1',';':'r1','$':'r1'},
+        3: {'id': 's4',},
+        4: {';': 's5',},
+        5: {'int': 'r2','id':'r2',';':'r2','$':'r2'},
     },
 
-    'action_table' : {
-        0: {'SEÇÃOFUNÇÕES': 'S1', 'PRINCIPAL': 'S2', 'PROGRAMA': 'G1'},
-        1: {'LISTAFUNÇÕES': 'S3', 'ε': 'S4'},
-        2: {'main': 'S5'},
-        3: {'DECFUNÇÃO': 'S6'},
-        4: {'$': 'ACCEPT'},
-        5: {'(': 'S7'},
+    'Goto': {
+        
+        0: {'PROGRAMA': 1,'DECVAR': 2,},
     },
-
-    'goto_table' : {
-        0: {'SEÇÃOFUNÇÕES': 1, 'PRINCIPAL': 2, 'PROGRAMA': 1},
-        1: {'LISTAFUNÇÕES': 3, 'ε': 4},
-        2: {'main': 5},
-        3: {'DECFUNÇÃO': 6},
-        4: {'$': 'ACCEPT'},
-        5: {'(': 7},
-        6: {'TIPORETORNO': 8},
-        7: {'LISTAPARÂMETROS': 9, 'ε': 10},
-        8: {'TIPO': 11, 'void': 12},
-        9: {'id': 13},
+    'Produção':
+    {
+        1: {'left': 'PROGRAMA', 'right': ['DECVAR']},
+        2: {'left': 'DECVAR', 'right': ['int','id',';']},
     }
-
 }
 
 # Tokens de entrada (simplificados para este exemplo)
-tokens = ['int','identificador', ';']
+tokens = ['int','id',';']
+
 
 # Cria o analisador sintático SLR
 parser = SLRParser(tabela_slr)

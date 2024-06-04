@@ -49,7 +49,7 @@ class SLRParser:
                 # Reduce: aplica a redução utilizando a produção indicada
                 num_producao = int(acao[1:])
                 print('Número de produção: ', num_producao)
-                producao = self.tabela['Productions'][num_producao]
+                producao = self.tabela['produção'][num_producao]
                 print('Produção: ', producao)
 
                 # Remove da pilha o número de símbolos da produção à direita, se não for produção vazia
@@ -95,35 +95,27 @@ class SLRParser:
 tabela_slr = {
     'Ação': {
         
-        0: {'id': 's5','(':'s4',},
-        1: {'+': 's6','$':'acc',},
-        2: {'+': 'r2','*':'s7',')':'r2','$':'r2',},
-        3: {'+': 'r4','*':'r4',')':'r4','$':'r4',},
-        4: {'id': 's5','(':'s4',},
-        5: {'+': 'r6','*':'r6',')':'r6','$':'r6',},
-        6: {'id': 's5','(':'s4',},
-        7: {'id': 's5','(':'s4',},
-        8: {'+': 's6',')':'s11',},
-        9: {'+': 'r1','*':'s7',')':'r1','$':'r1',},
-        10: {'+': 'r3','*':'r3',')':'r3','$':'r3',},
-        11: {'+': 'r5','*':'r5',')':'r5','$':'r5',},
+        0: {'int': 's3'},
+        1: {'$': 'acc'},
+        2: {'int': 'r1','id':'r1',';':'r1','$':'r1'},
+        3: {'id': 's4',},
+        4: {';': 's5',},
+        5: {'int': 'r2','id':'r2',';':'r2','$':'r2'},
     },
 
     'Goto': {
         
-        0: {'E': 1,'T': 2,'F': 3},
-        4: {'E': 8,'T': 2,'F': 3},
-        6: {'T': 9,'F': 3},
-        7: {'F': 10},
+        0: {'PROG': 1,'DECVAR': 2,},
     },
-    'Reduce':
+    'produção':
     {
-        'S':'_S'
+        1: {'left': 'PROGRAMA', 'right': ['DECVAR']},
+        2: {'left': 'DECVAR', 'right': ['int','id',';']},
     }
 }
 
 # Tokens de entrada (simplificados para este exemplo)
-tokens = ['int', 'x',';']
+tokens = ['int','id',';']
 
 # Cria o analisador sintático SLR
 parser = SLRParser(tabela_slr)
