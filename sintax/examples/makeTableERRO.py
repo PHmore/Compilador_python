@@ -7,15 +7,16 @@ class Grammar:
         self._process_grammar()
 
     def _process_grammar(self):
-        for lhs in self.productions:
+        for lhs, rhs in self.productions.items():
             if self.start_symbol is None:
                 self.start_symbol = lhs
             self.non_terminals.add(lhs)
-        for lhs, rhs_list in self.productions.items():
-            for rhs in rhs_list:
-                for symbol in rhs:
-                    if symbol not in self.non_terminals:
+            for production in rhs:
+                for symbol in production:
+                    if not symbol.isupper() and symbol not in ['$', ';']:
                         self.terminals.add(symbol)
+                    else:
+                        self.non_terminals.add(symbol)
 
 class Item:
     def __init__(self, lhs, rhs, dot):
@@ -85,7 +86,7 @@ def items(grammar):
 productions = {
     'S': [['PROGRAMA']],
     'PROGRAMA': [['DECVAR']],
-    'DECVAR': [['int', 'id',';']],
+    'DECVAR': [['int', 'id',]],
 }
 
 grammar = Grammar(productions)
@@ -104,15 +105,7 @@ print("\nTransitions:")
 for (state, symbol), target_state in transitions.items():
     print(f"  State {state} -- {symbol} --> State {target_state}")
 
-# Create a mapping of productions to unique indices
-production_indices = {}
-index = 1
-for lhs, rhs_list in grammar.productions.items():
-    for rhs in rhs_list:
-        production_indices[(lhs, tuple(rhs))] = index
-        index += 1
-
-def create_tables(grammar, states, transitions, production_indices):
+def create_tables(grammar, states, transitions):
     action_table = {}
     goto_table = {}
 
@@ -127,13 +120,16 @@ def create_tables(grammar, states, transitions, production_indices):
                     if target_state is not None:
                         action_table[i][symbol] = f's{target_state}'
             else:
-                if item.lhs == grammar.start_symbol and item.rhs == grammar.productions[grammar.start_symbol][0]:
+                if item.lhs == grammar.start_symbol:
                     action_table[i]['$'] = 'acc'
                 else:
-                    prod_index = production_indices[(item.lhs, tuple(item.rhs))]
-                    for terminal in grammar.terminals.union({'$'}):
-                        if terminal not in action_table[i]:
-                            action_table[i][terminal] = f'r{prod_index}'
+                    for lhs, prods in grammar.productions.items():
+                        if item.lhs == lhs:
+                            for j, prod in enumerate(prods):
+                                if prod == item.rhs:
+                                    for terminal in grammar.terminals.union({'$', ';'}):
+                                        if terminal not in action_table[i]:
+                                            action_table[i][terminal] = f'r{j + 1}'
 
         for symbol in grammar.non_terminals:
             target_state = transitions.get((i, symbol))
@@ -143,12 +139,13 @@ def create_tables(grammar, states, transitions, production_indices):
     return action_table, goto_table
 
 # Create the ACTION and GOTO tables
-action_table, goto_table = create_tables(grammar, states, transitions, production_indices)
+action_table, goto_table = create_tables(grammar, states, transitions)
 
 # Generate the production dictionary
 production_dict = {}
-for (lhs, rhs), index in production_indices.items():
-    production_dict[index] = {'left': lhs, 'right': list(rhs)}
+for idx, (lhs, rhs_list) in enumerate(grammar.productions.items(), start=1):
+    for rhs in rhs_list:
+        production_dict[idx] = {'left': lhs, 'right': rhs}
 
 # Create the final table structure
 tabela_slr = {

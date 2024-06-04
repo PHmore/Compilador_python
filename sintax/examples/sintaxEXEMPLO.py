@@ -118,16 +118,27 @@ class SLRParser:
 # Exemplo de utilização
 
 # Tabela de análise SLR
-tabela_slr = {'Ação': {0: {'int': 's2'},
-          1: {'$': 'r2', ';': 'r2', 'id': 'r2', 'int': 'r2'},
-          2: {'id': 's4'},
-          3: {'$': 'acc'},
-          4: {';': 's5'},
-          5: {'$': 'r3', ';': 'r3', 'id': 'r3', 'int': 'r3'}},
- 'Goto': {0: {'DECVAR': 1, 'PROGRAMA': 3}, 1: {}, 2: {}, 3: {}, 4: {}, 5: {}},
- 'Produção': {1: {'left': 'S', 'right': ['PROGRAMA']},
-              2: {'left': 'PROGRAMA', 'right': ['DECVAR']},
-              3: {'left': 'DECVAR', 'right': ['int', 'id', ';']}}}
+tabela_slr = {
+    'Ação': {
+        
+        0: {'int': 's3'},
+        1: {'$': 'acc'},
+        2: {'int': 'r1','id':'r1',';':'r1','$':'r1'},
+        3: {'id': 's4',},
+        4: {';': 's5',},
+        5: {'int': 'r2','id':'r2',';':'r2','$':'r2'},
+    },
+
+    'Goto': {
+        
+        0: {'PROGRAMA': 1,'DECVAR': 2,},
+    },
+    'Produção':
+    {
+        1: {'left': 'PROGRAMA', 'right': ['DECVAR']},
+        2: {'left': 'DECVAR', 'right': ['int','id',';']},
+    }
+}
 
 # Tokens de entrada (simplificados para este exemplo)
 tokens = ['int','id',';']
