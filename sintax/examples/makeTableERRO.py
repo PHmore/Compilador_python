@@ -82,78 +82,69 @@ def items(grammar):
 
     return states, transitions
 
-# Define the grammar
+def getTabela(productions):
+    grammar = Grammar(productions)
+    
+    # Generate the states and transitions
+    states, transitions = items(grammar)
+    
+    def create_tables(grammar, states, transitions):
+        action_table = {}
+        goto_table = {}
+
+        for i, state in enumerate(states):
+            action_table[i] = {}
+            goto_table[i] = {}
+            for item in state:
+                if item.dot < len(item.rhs):
+                    symbol = item.rhs[item.dot]
+                    if symbol in grammar.terminals:
+                        target_state = transitions.get((i, symbol))
+                        if target_state is not None:
+                            action_table[i][symbol] = f's{target_state}'
+                else:
+                    if item.lhs == grammar.start_symbol:
+                        action_table[i]['$'] = 'acc'
+                    else:
+                        for lhs, prods in grammar.productions.items():
+                            if item.lhs == lhs:
+                                for j, prod in enumerate(prods):
+                                    if prod == item.rhs:
+                                        for terminal in grammar.terminals.union({'$', ';'}):
+                                            if terminal not in action_table[i]:
+                                                action_table[i][terminal] = f'r{j + 1}'
+
+            for symbol in grammar.non_terminals:
+                target_state = transitions.get((i, symbol))
+                if target_state is not None:
+                    goto_table[i][symbol] = target_state
+
+        return action_table, goto_table
+
+    # Create the ACTION and GOTO tables
+    action_table, goto_table = create_tables(grammar, states, transitions)
+
+    # Generate the production dictionary
+    production_dict = {}
+    for idx, (lhs, rhs_list) in enumerate(grammar.productions.items(), start=1):
+        for rhs in rhs_list:
+            production_dict[idx] = {'left': lhs, 'right': rhs}
+
+    # Create the final table structure
+    tabela_slr = {
+        'Ação': action_table,
+        'Goto': goto_table,
+        'Produção': production_dict
+    }
+
+    # Print the final table structure
+    import pprint
+    pprint.pprint(tabela_slr)
+
 productions = {
     'S': [['PROGRAMA']],
     'PROGRAMA': [['DECVAR']],
     'DECVAR': [['int', 'id',]],
 }
 
-grammar = Grammar(productions)
-
-# Generate the states and transitions
-states, transitions = items(grammar)
-
-# Print the states
-for i, state in enumerate(states):
-    print(f"State {i}:")
-    for item in state:
-        print(f"  {item}")
-
-# Print the transitions
-print("\nTransitions:")
-for (state, symbol), target_state in transitions.items():
-    print(f"  State {state} -- {symbol} --> State {target_state}")
-
-def create_tables(grammar, states, transitions):
-    action_table = {}
-    goto_table = {}
-
-    for i, state in enumerate(states):
-        action_table[i] = {}
-        goto_table[i] = {}
-        for item in state:
-            if item.dot < len(item.rhs):
-                symbol = item.rhs[item.dot]
-                if symbol in grammar.terminals:
-                    target_state = transitions.get((i, symbol))
-                    if target_state is not None:
-                        action_table[i][symbol] = f's{target_state}'
-            else:
-                if item.lhs == grammar.start_symbol:
-                    action_table[i]['$'] = 'acc'
-                else:
-                    for lhs, prods in grammar.productions.items():
-                        if item.lhs == lhs:
-                            for j, prod in enumerate(prods):
-                                if prod == item.rhs:
-                                    for terminal in grammar.terminals.union({'$', ';'}):
-                                        if terminal not in action_table[i]:
-                                            action_table[i][terminal] = f'r{j + 1}'
-
-        for symbol in grammar.non_terminals:
-            target_state = transitions.get((i, symbol))
-            if target_state is not None:
-                goto_table[i][symbol] = target_state
-
-    return action_table, goto_table
-
-# Create the ACTION and GOTO tables
-action_table, goto_table = create_tables(grammar, states, transitions)
-
-# Generate the production dictionary
-production_dict = {}
-for idx, (lhs, rhs_list) in enumerate(grammar.productions.items(), start=1):
-    for rhs in rhs_list:
-        production_dict[idx] = {'left': lhs, 'right': rhs}
-
-# Create the final table structure
-tabela_slr = {
-    'Ação': action_table,
-    'Goto': goto_table,
-    'Produção': production_dict
-}
-
-# Print the final table structure
-import pprint
-pprint.pprint(tabela_slr)
+getTabela(productions)

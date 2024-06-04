@@ -442,7 +442,7 @@ def printAllGOTO(diction):
 
 # example sample set 01
 rules = [
-	
+	"""
     PROGRAMA → SEÇÃOFUNÇÕES PRINCIPAL
 SEÇÃOFUNÇÕES → LISTAFUNÇÕES | ε
 LISTAFUNÇÕES → DECFUNÇÃO | LISTAFUNÇÕES DECFUNÇÃO
@@ -496,7 +496,7 @@ OP_MULTIPLICATIVO → * | / | %
 FATOR → SINAL identificador DIMENSAO2 | SINAL CONSTANTE | texto | ! FATOR
 | ( EXPRESSÃO )
 CONSTANTE → num_int | num_dec
-SINAL → + | - | ε
+SINAL → + | - | ε"""
 
 		]
 nonterm_userdef = ['E', 'T', 'F']

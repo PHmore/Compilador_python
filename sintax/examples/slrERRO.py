@@ -1,3 +1,5 @@
+# Versão com defeito
+
 class SLRParser:
     def __init__(self, tabela):
         self.tabela = tabela

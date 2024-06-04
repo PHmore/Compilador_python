@@ -1,3 +1,6 @@
+import makeTable
+
+
 # Primeiro devemos criar as tabelas
 
 # Faremos a coleção canônica de itens
@@ -118,19 +121,81 @@ class SLRParser:
 # Exemplo de utilização
 
 # Tabela de análise SLR
-tabela_slr = {'Ação': {0: {'int': 's2'},
-          1: {'$': 'r2', ';': 'r2', 'id': 'r2', 'int': 'r2'},
-          2: {'id': 's4'},
-          3: {'$': 'acc'},
-          4: {';': 's5'},
-          5: {'$': 'r3', ';': 'r3', 'id': 'r3', 'int': 'r3'}},
- 'Goto': {0: {'DECVAR': 1, 'PROGRAMA': 3}, 1: {}, 2: {}, 3: {}, 4: {}, 5: {}},
- 'Produção': {1: {'left': 'S', 'right': ['PROGRAMA']},
-              2: {'left': 'PROGRAMA', 'right': ['DECVAR']},
-              3: {'left': 'DECVAR', 'right': ['int', 'id', ';']}}}
+# tabela_slr = {'Ação': {0: {'int': 's2'},
+#           1: {'$': 'r2', ';': 'r2', 'id': 'r2', 'int': 'r2'},
+#           2: {'id': 's4'},
+#           3: {'$': 'acc'},
+#           4: {';': 's5'},
+#           5: {'$': 'r3', ';': 'r3', 'id': 'r3', 'int': 'r3'}},
+#  'Goto': {0: {'DECVAR': 1, 'PROGRAMA': 3}, 1: {}, 2: {}, 3: {}, 4: {}, 5: {}},
+#  'Produção': {1: {'left': 'S', 'right': ['PROGRAMA']},
+#               2: {'left': 'PROGRAMA', 'right': ['DECVAR']},
+#               3: {'left': 'DECVAR', 'right': ['int', 'id', ';']}}}
+"""
+productions = {
+    'S': [['PROGRAMA']],
+    'PROGRAMA': [['SEÇÃO_FUNÇÕES', 'PRINCIPAL']],
+    'SEÇÃO_FUNÇÕES': [['LISTA_FUNÇÕES'], ['ε']],
+    'LISTA_FUNÇÕES': [['DEC_FUNÇÃO'], ['LISTA_FUNÇÕES', 'DEC_FUNÇÃO']],
+    'DEC_FUNÇÃO': [['TIPO_RETORNO', 'id', '(', 'PARÂMETROS', ')', 'BLOCO']],
+    'TIPO_RETORNO': [['TIPO'], ['void']],
+    'TIPO': [['TIPO_BASE', 'DIMENSÃO']],
+    'TIPO_BASE': [['char'], ['float'], ['int'], ['boolean']],
+    'DIMENSÃO': [['DIMENSÃO', '[', 'num_int', ']'], ['ε']],
+    'PARÂMETROS': [['LISTA_PARÂMETROS'], ['ε']],
+    'LISTA_PARÂMETROS': [['TIPO', 'id'], ['LISTA_PARÂMETROS', ',', 'TIPO', 'id']],
+    'PRINCIPAL': [['main', '(', ')', 'BLOCO']],
+    'BLOCO': [['{', 'SEÇÃO_VARIAVEIS', 'SEÇÃO_COMANDOS', '}']],
+    'SEÇÃO_VARIAVEIS': [['LISTA_VARIAVEIS'], ['ε']],
+    'LISTA_VARIAVEIS': [['TIPO', 'LISTA_ID', ';'], ['LISTA_VARIAVEIS', 'TIPO', 'LISTA_ID', ';']],
+    'LISTA_ID': [['identificador'], ['LISTA_ID', ',', 'identificador']],
+    'SEÇÃO_COMANDOS': [['LISTA_COMANDOS'], ['ε']],
+    'LISTA_COMANDOS': [['COMANDO'], ['LISTA_COMANDOS', 'COMANDO']],
+    'COMANDO': [['LEITURA'], ['ESCRITA'], ['ATRIBUIÇÃO'], ['FUNÇÃO'], ['SELEÇÃO'], ['ENQUANTO'], ['RETORNO']],
+    'LEITURA': [['scanf', '(', 'LISTA_TERMO_LEITURA', ')', ';']],
+    'LISTA_TERMO_LEITURA': [['TERMO_LEITURA'], ['LISTA_TERMO_LEITURA', ',', 'TERMO_LEITURA']],
+    'TERMO_LEITURA': [['id', 'DIMENSAO2']],
+    'DIMENSAO2': [['DIMENSAO2', '[', 'EXPR_ADITIVA', ']', 'ε']],
+    'ESCRITA': [['println', '(', 'LISTA_TERMO_ESCRITA', ')', ';']],
+    'LISTA_TERMO_ESCRITA': [['TERMO_ESCRITA'], ['LISTA_TERMO_ESCRITA', ',', 'TERMO_ESCRITA']],
+    'TERMO_ESCRITA': [['id', 'DIMENSAO2'], ['CONSTANTE'], ['texto']],
+    'SELEÇÃO': [['if', '(', 'EXPRESSÃO', ')', 'BLOCO', 'SENÃO']],
+    'SENÃO': [['else', 'BLOCO'], ['ε']],
+    'ENQUANTO': [['while', '(', 'EXPRESSÃO', ')', 'BLOCO']],
+    'ATRIBUIÇÃO': [['id', '=', 'COMPLEMENTO', ';']],
+    'COMPLEMENTO': [['EXPRESSÃO'], ['FUNÇÃO']],
+    'FUNÇÃO': [['func', 'id', '(', 'ARGUMENTOS', ')']],
+    'ARGUMENTOS': [['LISTA_ARGUMENTOS'], ['ε']],
+    'LISTA_ARGUMENTOS': [['EXPRESSÃO'], ['LISTA_ARGUMENTOS', ',', 'EXPRESSÃO']],
+    'RETORNO': [['return', 'EXPRESSÃO', ';']],
+    'EXPRESSÃO': [['EXPR_OU']],
+    'EXPR_OU': [['EXPR_E'], ['EXPR_OU', '||', 'EXPR_E']],
+    'EXPR_E': [['EXPR_RELACIONAL'], ['EXPR_E', '&&', 'EXPR_RELACIONAL']],
+    'EXPR_RELACIONAL': [['EXPR_ADITIVA'], ['EXPR_ADITIVA', 'opRelacional', 'EXPR_ADITIVA']],
+    'EXPR_ADITIVA': [['EXPR_MULTIPLICATIVA'], ['EXPR_ADITIVA', 'OP_ADITIVO', 'EXPR_MULTIPLICATIVA']],
+    'OP_ADITIVO': [['+'], ['-']],
+    'EXPR_MULTIPLICATIVA': [['FATOR'], ['EXPR_MULTIPLICATIVA', 'OP_MULTIPLICATIVO', 'FATOR']],
+    'OP_MULTIPLICATIVO': [['*'], ['/'], ['%']],
+    'FATOR': [['SINAL', 'identificador', 'DIMENSAO2'],['SINAL' ,'CONSTANTE'], ['texto'],['FATOR'],['(','EXPRESSÃO',')']],
+    'SINAL': [['+'],['-'],['ε']],
+}
+"""
+
+productions = {
+    'S': [['PROGRAMA']],
+    'PROGRAMA': [['DECVAR'],['DECFUN']],
+    'DECVAR': [['DEC',';']],
+    'DECFUN': [['DEC','(',')','BLOCO']],
+    'BLOCO': [['{','}']],
+    'DEC':[['int','id']]
+    }
+
+tabela_slr = makeTable.getTabela(productions)
+print('\nA tabela foi instaciada:\n',tabela_slr)
 
 # Tokens de entrada (simplificados para este exemplo)
-tokens = ['int','id',';']
+# tokens = ['int','identificador', '(', ')', '{', 'int', 'id', ';', 'float', 'id', '[', 'num_int', ']', ';', 'char', 'id', ';', 'boolean', 'id', '=', 'true', ';', 'id', '=', 'num_int', ';', 'id', '=', 'texto', ';', 'if', '(', 'id', '>', 'num_int', ')', '{', 'id', '[', 'num_int', ']', '=', 'num_dec', ';', '}', 'else', '{', 'id', '[', 'num_int', ']', '=', 'num_dec', ';', '}', 'while', '(', 'id', ')', '{', 'id', '--', ';', '}', 'return', 'num_int', ';', '}']
+tokens = ['int','id','(',')','{','}']
 
 
 # Cria o analisador sintático SLR

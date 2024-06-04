@@ -81,82 +81,90 @@ def items(grammar):
 
     return states, transitions
 
-# Define the grammar
-productions = {
-    'S': [['PROGRAMA']],
-    'PROGRAMA': [['DECVAR']],
-    'DECVAR': [['int', 'id',';']],
-}
+def getTabela(productions):
 
-grammar = Grammar(productions)
+    grammar = Grammar(productions)
 
-# Generate the states and transitions
-states, transitions = items(grammar)
+    # Generate the states and transitions
+    states, transitions = items(grammar)
 
-# Print the states
-for i, state in enumerate(states):
-    print(f"State {i}:")
-    for item in state:
-        print(f"  {item}")
-
-# Print the transitions
-print("\nTransitions:")
-for (state, symbol), target_state in transitions.items():
-    print(f"  State {state} -- {symbol} --> State {target_state}")
-
-# Create a mapping of productions to unique indices
-production_indices = {}
-index = 1
-for lhs, rhs_list in grammar.productions.items():
-    for rhs in rhs_list:
-        production_indices[(lhs, tuple(rhs))] = index
-        index += 1
-
-def create_tables(grammar, states, transitions, production_indices):
-    action_table = {}
-    goto_table = {}
-
+    # Print the states
     for i, state in enumerate(states):
-        action_table[i] = {}
-        goto_table[i] = {}
+        print(f"State {i}:")
         for item in state:
-            if item.dot < len(item.rhs):
-                symbol = item.rhs[item.dot]
-                if symbol in grammar.terminals:
-                    target_state = transitions.get((i, symbol))
-                    if target_state is not None:
-                        action_table[i][symbol] = f's{target_state}'
-            else:
-                if item.lhs == grammar.start_symbol and item.rhs == grammar.productions[grammar.start_symbol][0]:
-                    action_table[i]['$'] = 'acc'
+            print(f"  {item}")
+
+    # Print the transitions
+    print("\nTransitions:")
+    for (state, symbol), target_state in transitions.items():
+        print(f"  State {state} -- {symbol} --> State {target_state}")
+
+    # Create a mapping of productions to unique indices
+    production_indices = {}
+    index = 1
+    for lhs, rhs_list in grammar.productions.items():
+        for rhs in rhs_list:
+            production_indices[(lhs, tuple(rhs))] = index
+            index += 1
+
+    def create_tables(grammar, states, transitions, production_indices):
+        action_table = {}
+        goto_table = {}
+
+        for i, state in enumerate(states):
+            action_table[i] = {}
+            goto_table[i] = {}
+            for item in state:
+                if item.dot < len(item.rhs):
+                    symbol = item.rhs[item.dot]
+                    if symbol in grammar.terminals:
+                        target_state = transitions.get((i, symbol))
+                        if target_state is not None:
+                            action_table[i][symbol] = f's{target_state}'
                 else:
-                    prod_index = production_indices[(item.lhs, tuple(item.rhs))]
-                    for terminal in grammar.terminals.union({'$'}):
-                        if terminal not in action_table[i]:
-                            action_table[i][terminal] = f'r{prod_index}'
+                    if item.lhs == grammar.start_symbol and item.rhs == grammar.productions[grammar.start_symbol][0]:
+                        action_table[i]['$'] = 'acc'
+                    else:
+                        prod_index = production_indices[(item.lhs, tuple(item.rhs))]
+                        for terminal in grammar.terminals.union({'$'}):
+                            if terminal not in action_table[i]:
+                                action_table[i][terminal] = f'r{prod_index}'
 
-        for symbol in grammar.non_terminals:
-            target_state = transitions.get((i, symbol))
-            if target_state is not None:
-                goto_table[i][symbol] = target_state
+            for symbol in grammar.non_terminals:
+                target_state = transitions.get((i, symbol))
+                if target_state is not None:
+                    goto_table[i][symbol] = target_state
 
-    return action_table, goto_table
+        return action_table, goto_table
 
-# Create the ACTION and GOTO tables
-action_table, goto_table = create_tables(grammar, states, transitions, production_indices)
+    # Create the ACTION and GOTO tables
+    action_table, goto_table = create_tables(grammar, states, transitions, production_indices)
 
-# Generate the production dictionary
-production_dict = {}
-for (lhs, rhs), index in production_indices.items():
-    production_dict[index] = {'left': lhs, 'right': list(rhs)}
+    # Generate the production dictionary
+    production_dict = {}
+    for (lhs, rhs), index in production_indices.items():
+        production_dict[index] = {'left': lhs, 'right': list(rhs)}
 
-# Create the final table structure
-tabela_slr = {
-    'Ação': action_table,
-    'Goto': goto_table,
-    'Produção': production_dict
-}
+    # Create the final table structure
+    tabela_slr = {
+        'Ação': action_table,
+        'Goto': goto_table,
+        'Produção': production_dict
+    }
 
-# Print the final table structure
-import pprint
-pprint.pprint(tabela_slr)
+    return tabela_slr
+
+
+
+
+# productions = {
+#     'S': [['PROGRAMA']],
+#     'PROGRAMA': [['DECVAR']],
+#     'DECVAR': [['int', 'id',';']],
+# }
+
+# tabela_slr = getTabela(productions)
+
+# # Print the final table structure
+# import pprint
+# pprint.pprint(tabela_slr)
