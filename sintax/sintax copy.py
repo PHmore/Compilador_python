@@ -149,7 +149,7 @@ productions = {
     'BLOCO': [['{', 'SEÇÃO_VARIAVEIS', 'SEÇÃO_COMANDOS', '}']],
     'SEÇÃO_VARIAVEIS': [['LISTA_VARIAVEIS'], ['ε']],
     'LISTA_VARIAVEIS': [['TIPO', 'LISTA_ID', ';'], ['LISTA_VARIAVEIS', 'TIPO', 'LISTA_ID', ';']],
-    'LISTA_ID': [['identificador'], ['LISTA_ID', ',', 'identificador']],
+    'LISTA_ID': [['IDENTIFIER'], ['LISTA_ID', ',', 'IDENTIFIER']],
     'SEÇÃO_COMANDOS': [['LISTA_COMANDOS'], ['ε']],
     'LISTA_COMANDOS': [['COMANDO'], ['LISTA_COMANDOS', 'COMANDO']],
     'COMANDO': [['LEITURA'], ['ESCRITA'], ['ATRIBUIÇÃO'], ['FUNÇÃO'], ['SELEÇÃO'], ['ENQUANTO'], ['RETORNO']],
@@ -177,7 +177,7 @@ productions = {
     'OP_ADITIVO': [['+'], ['-']],
     'EXPR_MULTIPLICATIVA': [['FATOR'], ['EXPR_MULTIPLICATIVA', 'OP_MULTIPLICATIVO', 'FATOR']],
     'OP_MULTIPLICATIVO': [['*'], ['/'], ['%']],
-    'FATOR': [['SINAL', 'identificador', 'DIMENSAO2'],['SINAL' ,'CONSTANTE'], ['texto'],['FATOR'],['(','EXPRESSÃO',')']],
+    'FATOR': [['SINAL', 'IDENTIFIER', 'DIMENSAO2'],['SINAL' ,'CONSTANTE'], ['texto'],['FATOR'],['(','EXPRESSÃO',')']],
     'SINAL': [['+'],['-'],['ε']],
 }
 
@@ -202,27 +202,49 @@ Exemplo:
 productions = {
     'S': [['PROGRAMA']],
     'PROGRAMA': [['LIBS','DECLARACOES']],
-    'DECLARACOES': [['DECLARACAO','DECLARACOES',],['DECLARACAO',],],
-    'DECLARACAO':[['DECFUN'],['DECVAR'],],
+    'DECLARACOES': [['DECVAR','PRINCIPAL']],
+    # 'DECLARACOES': [['DECLARACAO','DECLARACOES',],['DECLARACAO',],],
+    # 'DECLARACAO':[['DECFUN'],['DECVAR'],],
     'LIBS':[['LIB','LIBS'],['LIB']],
     'LIB':[['#','include','LIBRARY']],
-    'DECVAR': [['DEC',';']],
-    'DECFUN': [['DEC','(',')','BLOCO']],
-    'DEC':[['TIPO','id']],
-    'TIPO':[['int'],['char'],['float'],['void']],
+    'DECVAR': [['TIPO','IDENTIFIER',';']],
+    'PRINCIPAL': [['TIPORET','main','(','PARAMETRO',')','BLOCO']],
+    'DECFUN': [['TIPORET','IDENTIFIER','(','PARAMETRO',')','BLOCO']],
+    'PARAMETRO':[['IDENTIFIER','(','PARAMETRO',')'],['IDENTIFIER'],['void']],
+    'TIPORET':[['int'],['char'],['float'],['void']],
+    'TIPO':[['int'],['char'],['float']],
+    'IF':[['if','(','EXPBOOL',')','BLOCOIF']],
     'BLOCO': [['{','CODIGOS','}']],
-    'CODIGOS': [['printf']],
+    'BLOCOIF': [['{','CODIGOSIF','}','else','{','KEYPRINT','}']],
+    'CODIGOS': [['KEYWORDS'],['FATOR','RETORNO'],['ATT','RETORNO']],
+    'CODIGOSIF': [['ATTSOMA']],
+    'ATTSOMA': [['ATT','=','NUM',';',]],
+    'ATT':[['IDENTIFIER','+'],],
+    'RETORNO': [['return','FATOR',';']],
+    'KEYWORDS':[['IF'],['while'],['for'],['printf','(',')']],
+    'KEYPRINT':[['printf','(','LITERAL',')',';']],
+    'EXPBOOL':[['IDENTIFIER','OPBOOL','INTEGER'],['INTEGER','OPBOOL','INTEGER']],
+    'FATOR':[['IDENTIFIER','OPERATOR','INTEGER']],
+    'NUM':[['INTEGER'],['IDENTIFIER']],
+    'OPERATOR':[['+'],['-'],['*'],['/']],
+    'UNIOPERATOR':[['++'],['--']],
+    'OPBOOL':[['=='],['<='],['>='],['!=']],
     }
 
 tabela_slr = makeTablenew.getTabela(productions)
 
-# Tokens de entrada (simplificados para este exemplo)
-# tokens = ['int','identificador', '(', ')', '{', 'int', 'id', ';', 'float', 'id', '[', 'num_int', ']', ';', 'char', 'id', ';', 'boolean', 'id', '=', 'true', ';', 'id', '=', 'num_int', ';', 'id', '=', 'texto', ';', 'if', '(', 'id', '>', 'num_int', ')', '{', 'id', '[', 'num_int', ']', '=', 'num_dec', ';', '}', 'else', '{', 'id', '[', 'num_int', ']', '=', 'num_dec', ';', '}', 'while', '(', 'id', ')', '{', 'id', '--', ';', '}', 'return', 'num_int', ';', '}']
 tokens = ['#','include','LIBRARY','int','id','(',')','{','printf','}']
 tokens1= ['#','include','LIBRARY','int','id',';']
 tokens2= ['#','include','LIBRARY','int','id',';','int','id','(',')','{','printf','}']
 
-token_ex = ['#','include','LIBRARY','\n','\n','int','IDENTIFIER','(','IDENTIFIER',')','{','\n','if','(','IDENTIFIER','%','INTEGER','==','INTEGER',')','{','\n','return','INTEGER',';','}','\n','else','{','\n','return','INTEGER',';','}','\n','}','\n','\n','void','main','(',')','{','\n','int','IDENTIFIER','=','INTEGER',';','\n','float','IDENTIFIER','=','FLOAT',';','\n','char','IDENTIFIER','=','CHAR',';','\n','\n','printf','(','IDENTIFIER','(','IDENTIFIER',')',')',';','\n','\n','printf','(','LITERAL',')',';','\n','\n','for','(','int','IDENTIFIER','=','INTEGER',';','IDENTIFIER','<','INTEGER',';','IDENTIFIER','+','+',')','{','\n','printf','(','LITERAL',',','IDENTIFIER',')',';','\n','}','\n','}','\n',]
+token_ex = ['#','include','LIBRARY','\n','\n','\n','int','IDENTIFIER',';','\n','\n','void','main','(','void',')','{','\n','\n','if','(','INTEGER','==','INTEGER',')','\n','{','\n','IDENTIFIER','+','=','INTEGER',';','\n','}','else','\n','{','\n','printf','(','LITERAL',')',';','\n','}','\n','}','\n']
+    
+    
+    
+    
+    
+   
+   
 while '\n' in token_ex:
     token_ex.remove('\n')
 
@@ -233,5 +255,6 @@ parser = SLRParser(tabela_slr)
 
 # Realiza a análise sintática
 # parser.parse(tokens)
-parser.parse(tokens1)
+# parser.parse(tokens1)
 # parser.parse(tokens2)
+parser.parse(token_ex)
