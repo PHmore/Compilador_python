@@ -1,5 +1,4 @@
 import makeTablenew
-import makeTable
 
 
 # Primeiro devemos criar as tabelas

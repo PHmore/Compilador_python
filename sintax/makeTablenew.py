@@ -81,9 +81,6 @@ def items(grammar):
                     transitions[(states.index(state), symbol)] = len(new_states) - 1
                     added = True
                 elif new_state is None and symbol in grammar.terminals:
-                    # Se o próximo estado não puder ser alcançado e o símbolo for terminal,
-                    # adicionamos uma transição para um estado de aceitação se a produção
-                    # correspondente puder produzir vazio
                     for item in state:
                         if item.dot == len(item.rhs) and symbol in grammar.productions[item.lhs][0]:
                             transitions[(states.index(state), symbol)] = 'acc'

@@ -1,6 +1,5 @@
-import makeTablenew
-import makeTable
-import MakeLR1table
+
+import sintax.examples.MakeLR1table as MakeLR1table
 
 
 # Primeiro devemos criar as tabelas
