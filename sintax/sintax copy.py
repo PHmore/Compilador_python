@@ -195,25 +195,14 @@ self.accepting = {1: 'IDENTIFIER', 2: 'INTEGER', 4: 'IDENTIFIER_ERROR', 5: 'FLOA
                                'static', 'const', 'volatile', 'extern', 'register', 'auto', 'signed', 'unsigned', 'do',
                                'short', 'long', 'printf', 'define', 'include', 'scanf']
 Exemplo:
-<#, > <include, > <LIBRARY, <stdio.h>> 
-<\n,  > <#, > <include, > <LIBRARY, <stdlib.h>> 
-<\n,  > 
-<\n,  > 
-<int, > <IDENTIFIER, par> <(, > <IDENTIFIER, num> <), > 
-<{, > <\n,  > 
-<if, > <(, > <IDENTIFIER, num> <%, > <INTEGER, 2> <==, > <INTEGER, 0> <), > <\n,  > <return, > <INTEGER, 1> <;, > <COMMENT, // 1 seria o caso verdadeiro
-> <return, > <INTEGER, 0> <;, > <COMMENT, //0 seria o caso falso
-> <}, > <\n,  > <\n,  > <void, > <main, > <(, > <), > <{, > <\n,  > <int, > <IDENTIFIER, i> <=, > <INTEGER, 5> <;, > <\n,  > <float, > <IDENTIFIER, f> <=, > <FLOAT, 3.45> <;, > <\n,  > <char, > <IDENTIFIER, c> <=, > <CHAR, 'G'> <;, > <\n,  > <\n,  > <printf, > <(, > <IDENTIFIER, par> <(, > <IDENTIFIER, i> <), > <), > <;, > <COMMENT, //mostra o resultado da fun��o par() para i
-> <\n,  > <printf, > <(, > <LITERAL, "Ol�, mundo!"> <), > <;, > <\n,  > <\n,  > <for, > <(, > <int, > <IDENTIFIER, j> <=, > <INTEGER, 0> <;, > <IDENTIFIER, j> <<, > <INTEGER, 5> <;, > <IDENTIFIER, j> <+, > <+, > <), > <{, > <\n,  > <printf, > <(, > <LITERAL, "Compilador"> <,, > <IDENTIFIER, j> <), > <;, > <\n,  > <}, > <\n,  > <}, > <\n,  > 
-                               
+                           
 
 """
 
 productions = {
     'S': [['PROGRAMA']],
     'PROGRAMA': [['LIBS','DECLARACOES']],
-    'DECLARACOES': [['DECLARACAO','DECLARACOESL',],],
-    'DECLARACOESL': [['DECVAR','DECLARACOESL',],['DECFUN','DECLARACOESL',],['DECLARACOES']],
+    'DECLARACOES': [['DECLARACAO','DECLARACOES',],['DECLARACAO',],],
     'DECLARACAO':[['DECFUN'],['DECVAR'],],
     'LIBS':[['LIB','LIBS'],['LIB']],
     'LIB':[['#','include','LIBRARY']],
@@ -233,10 +222,16 @@ tokens = ['#','include','LIBRARY','int','id','(',')','{','printf','}']
 tokens1= ['#','include','LIBRARY','int','id',';']
 tokens2= ['#','include','LIBRARY','int','id',';','int','id','(',')','{','printf','}']
 
+token_ex = ['#','include','LIBRARY','\n','\n','int','IDENTIFIER','(','IDENTIFIER',')','{','\n','if','(','IDENTIFIER','%','INTEGER','==','INTEGER',')','{','\n','return','INTEGER',';','}','\n','else','{','\n','return','INTEGER',';','}','\n','}','\n','\n','void','main','(',')','{','\n','int','IDENTIFIER','=','INTEGER',';','\n','float','IDENTIFIER','=','FLOAT',';','\n','char','IDENTIFIER','=','CHAR',';','\n','\n','printf','(','IDENTIFIER','(','IDENTIFIER',')',')',';','\n','\n','printf','(','LITERAL',')',';','\n','\n','for','(','int','IDENTIFIER','=','INTEGER',';','IDENTIFIER','<','INTEGER',';','IDENTIFIER','+','+',')','{','\n','printf','(','LITERAL',',','IDENTIFIER',')',';','\n','}','\n','}','\n',]
+while '\n' in token_ex:
+    token_ex.remove('\n')
+
+print(token_ex)
+
 # Cria o analisador sintático SLR
 parser = SLRParser(tabela_slr)
 
 # Realiza a análise sintática
 # parser.parse(tokens)
-# parser.parse(tokens1)
-parser.parse(tokens2)
+parser.parse(tokens1)
+# parser.parse(tokens2)

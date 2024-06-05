@@ -1,47 +1,58 @@
-productions = {
-    'S': [['PROGRAMA']],
-    'PROGRAMA': [['SECAO_FUNCOES', 'PRINCIPAL']],
-    'SECAO_FUNCOES': [['LISTA_FUNCOES'], ['ε']],
-    'LISTA_FUNCOES': [['DEC_FUNCAO'], ['LISTA_FUNCOES', 'DEC_FUNCAO']],
-    'DEC_FUNCAO': [['TIPO_RETORNO', 'ID', '(', 'PARAMETROS', ')', 'BLOCO']],
-    'TIPO_RETORNO': [['TIPO'], ['void']],
-    'TIPO': [['TIPO_BASE', 'DIMENSAO']],
-    'TIPO_BASE': [['char'], ['float'], ['int'], ['boolean']],
-    'DIMENSAO': [['DIMENSAO', '[', 'num_int', ']'], ['ε']],
-    'PARAMETROS': [['LISTA_PARAMETROS'], ['ε']],
-    'LISTA_PARAMETROS': [['TIPO', 'ID'], ['LISTA_PARAMETROS', ',', 'TIPO', 'ID']],
-    'PRINCIPAL': [['main', '(', ')', 'BLOCO']],
-    'BLOCO': [['{', 'SECAO_VARIAVEIS', 'SECAO_COMANDOS', '}']],
-    'SECAO_VARIAVEIS': [['LISTA_VARIAVEIS'], ['ε']],
-    'LISTA_VARIAVEIS': [['TIPO', 'LISTA_ID', ';'], ['LISTA_VARIAVEIS', 'TIPO', 'LISTA_ID', ';']],
-    'LISTA_ID': [['ID'], ['LISTA_ID', ',', 'ID']],
-    'SECAO_COMANDOS': [['LISTA_COMANDOS'], ['ε']],
-    'LISTA_COMANDOS': [['COMANDO'], ['LISTA_COMANDOS', 'COMANDO']],
-    'COMANDO': [['LEITURA'], ['ESCRITA'], ['ATRIBUICAO'], ['FUNCAO'], ['SELECAO'], ['ENQUANTO'], ['RETORNO']],
-    'LEITURA': [['scanf', '(', 'LISTA_TERMO_LEITURA', ')', ';']],
-    'LISTA_TERMO_LEITURA': [['TERMO_LEITURA'], ['LISTA_TERMO_LEITURA', ',', 'TERMO_LEITURA']],
-    'TERMO_LEITURA': [['ID', 'DIMENSAO2']],
-    'DIMENSAO2': [['DIMENSAO2', '[', 'EXPR_ADITIVA', ']', 'ε']],
-    'ESCRITA': [['println', '(', 'LISTA_TERMO_ESCRITA', ')', ';']],
-    'LISTA_TERMO_ESCRITA': [['TERMO_ESCRITA'], ['LISTA_TERMO_ESCRITA', ',', 'TERMO_ESCRITA']],
-    'TERMO_ESCRITA': [['ID', 'DIMENSAO2'], ['CONSTANTE'], ['texto']],
-    'SELECAO': [['if', '(', 'EXPRESSAO', ')', 'BLOCO', 'SENAO']],
-    'SENAO': [['else', 'BLOCO'], ['ε']],
-    'ENQUANTO': [['while', '(', 'EXPRESSAO', ')', 'BLOCO']],
-    'ATRIBUICAO': [['ID', '=', 'COMPLEMENTO', ';']],
-    'COMPLEMENTO': [['EXPRESSAO'], ['FUNCAO']],
-    'FUNCAO': [['func', 'ID', '(', 'ARGUMENTOS', ')']],
-    'ARGUMENTOS': [['LISTA_ARGUMENTOS'], ['ε']],
-    'LISTA_ARGUMENTOS': [['EXPRESSAO'], ['LISTA_ARGUMENTOS', ',', 'EXPRESSAO']],
-    'RETORNO': [['return', 'EXPRESSAO', ';']],
-    'EXPRESSAO': [['EXPR_OU']],
-    'EXPR_OU': [['EXPR_E'], ['EXPR_OU', '||', 'EXPR_E']],
-    'EXPR_E': [['EXPR_RELACIONAL'], ['EXPR_E', '&&', 'EXPR_RELACIONAL']],
-    'EXPR_RELACIONAL': [['EXPR_ADITIVA'], ['EXPR_ADITIVA', 'opRelacional', 'EXPR_ADITIVA']],
-    'EXPR_ADITIVA': [['EXPR_MULTIPLICATIVA'], ['EXPR_ADITIVA', 'OP_ADITIVO', 'EXPR_MULTIPLICATIVA']],
-    'OP_ADITIVO': [['+'], ['-']],
-    'EXPR_MULTIPLICATIVA': [['FATOR'], ['EXPR_MULTIPLICATIVA', 'OP_MULTIPLICATIVO', 'FATOR']],
-    'OP_MULTIPLICATIVO': [['*'], ['/'], ['%']],
-    'FATOR': [['SINAL', 'ID', 'DIMENSAO2'], ['SINAL', 'CONSTANTE'], ['texto'], ['FATOR'], ['(', 'EXPRESSAO', ')']],
-    'SINAL': [['+'], ['-'], ['ε']],
-}
+class LR0Parser:
+    def __init__(self):
+        # Tabela de análise LR(0)
+        self.action = {
+            0: {'a': 's1', '$': 'ACCEPT'},
+            1: {'a': 's1'},
+        }
+        self.goto = {
+            0: {'A': 2}
+        }
+        self.productions = {
+            0: ('A', ['A', 'a']),
+            1: ('A', ['a'])
+        }
+
+    def parse(self, input_str):
+        stack = [0]
+        input_str += '$'
+        pointer = 0
+
+        while True:
+            state = stack[-1]
+            symbol = input_str[pointer]
+
+            if symbol in self.action[state]:
+                action = self.action[state][symbol]
+
+                if action.startswith('s'):
+                    stack.append(int(action[1:]))
+                    pointer += 1
+                elif action == 'ACCEPT':
+                    print("Aceito")
+                    break
+            elif symbol in self.goto[state]:
+                stack.append(self.goto[state][symbol])
+            else:
+                print("Erro de análise sintática")
+                break
+
+    def print_table(self):
+        print("Tabela ACTION:")
+        for state, transitions in self.action.items():
+            for symbol, action in transitions.items():
+                print(f"({state}, {symbol}): {action}")
+        print("\nTabela GOTO:")
+        for state, transitions in self.goto.items():
+            for symbol, next_state in transitions.items():
+                print(f"({state}, {symbol}): {next_state}")
+
+# Função para solicitar entrada ao usuário
+def get_input():
+    return input("Digite a entrada: ")
+
+# Exemplo de uso
+parser = LR0Parser()
+parser.print_table()
+input_str = get_input()
+parser.parse(input_str)

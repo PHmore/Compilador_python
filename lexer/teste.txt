@@ -1,10 +1,10 @@
 #include <stdio.h>
-#include <stdlib.h>
 
 int par(num){
-    if (num % 2 == 0)
-        return 1;  // 1 seria o caso verdadeiro
-    return 0; //0 seria o caso falso
+    if (num % 2 == 0){
+        return 1;}
+    else{
+    return 0;}
 }
 
 void main(){
@@ -12,7 +12,7 @@ void main(){
     float f = 3.45;
     char c = 'G';
 
-    printf(par(i));  //mostra o resultado da função par() para i
+    printf(par(i));
 
     printf("Olá, mundo!");
 

@@ -20,8 +20,11 @@ def test():
     caminho_do_arquivo = "output.txt"
     
     with open(caminho_do_arquivo, 'w') as arquivo:
+        arquivo.write(f"[")
         for token in tokens:
-            arquivo.write(f'<{token.type}, {token.value}> ')
+            # arquivo.write(f'<{token.type}, {token.value}> ')
+            arquivo.write(f"\'{token.type}\',")
+        arquivo.write(f"]")
 
 # Programa Principal
 test()
