@@ -11,13 +11,11 @@ class Grammar:
             if self.start_symbol is None:
                 self.start_symbol = lhs
             self.non_terminals.add(lhs)
-        for lhs, rhs_list in self.productions.items():
-            for rhs in rhs_list:
-                if not rhs:  # Produção vazia
-                    self.terminals.add('ε')
+            for rhs in self.productions[lhs]:
                 for symbol in rhs:
-                    if symbol not in self.non_terminals:
+                    if symbol and symbol not in self.productions:
                         self.terminals.add(symbol)
+
 
 class Item:
     def __init__(self, lhs, rhs, dot):
@@ -33,6 +31,7 @@ class Item:
 
     def __str__(self):
         return f"{self.lhs} -> {' '.join(self.rhs[:self.dot] + ['.'] + self.rhs[self.dot:])}"
+
 
 def closure(items, grammar):
     closure_set = set(items)
@@ -50,15 +49,10 @@ def closure(items, grammar):
                         if new_item not in closure_set:
                             new_items.add(new_item)
                             added = True
-            else:  # Handling epsilon (empty production)
-                if item.lhs in grammar.productions and [] in grammar.productions[item.lhs]:
-                    new_item = Item(item.lhs, [], 1)
-                    if new_item not in closure_set:
-                        new_items.add(new_item)
-                        added = True
         closure_set = new_items
 
     return closure_set
+
 
 def goto(items, symbol, grammar):
     goto_set = set()
@@ -66,6 +60,7 @@ def goto(items, symbol, grammar):
         if item.dot < len(item.rhs) and item.rhs[item.dot] == symbol:
             goto_set.add(Item(item.lhs, item.rhs, item.dot + 1))
     return closure(goto_set, grammar)
+
 
 def items(grammar):
     start_item = Item(grammar.start_symbol, grammar.productions[grammar.start_symbol][0], 0)
@@ -85,27 +80,38 @@ def items(grammar):
                     new_states.append(new_state)
                     transitions[(states.index(state), symbol)] = len(new_states) - 1
                     added = True
+                elif new_state is None and symbol in grammar.terminals:
+                    # Se o próximo estado não puder ser alcançado e o símbolo for terminal,
+                    # adicionamos uma transição para um estado de aceitação se a produção
+                    # correspondente puder produzir vazio
+                    for item in state:
+                        if item.dot == len(item.rhs) and symbol in grammar.productions[item.lhs][0]:
+                            transitions[(states.index(state), symbol)] = 'acc'
+                            added = True
         states = new_states
 
     return states, transitions
 
-def getTabela(productions):
 
+def print_slr_table(tabela_slr, grammar):
+    print("Tabela SLR:")
+    print("-----------")
+    print("Terminais:", grammar.terminals)
+    print("Não-Terminais:", grammar.non_terminals)
+    print("\nTabela Ação:")
+    for state, actions in tabela_slr['Ação'].items():
+        print(f"Estado {state}: {actions}")
+
+    print("\nTabela Goto:")
+    for state, gotos in tabela_slr['Goto'].items():
+        print(f"Estado {state}: {gotos}")
+
+
+def getTabela(productions):
     grammar = Grammar(productions)
 
     # Generate the states and transitions
     states, transitions = items(grammar)
-
-    # Print the states
-    for i, state in enumerate(states):
-        print(f"State {i}:")
-        for item in state:
-            print(f"  {item}")
-
-    # Print the transitions
-    print("\nTransitions:")
-    for (state, symbol), target_state in transitions.items():
-        print(f"  State {state} -- {symbol} --> State {target_state}")
 
     # Create a mapping of productions to unique indices
     production_indices = {}
@@ -160,16 +166,7 @@ def getTabela(productions):
         'Produção': production_dict
     }
 
+    print_slr_table(tabela_slr, grammar)
+
     return tabela_slr
 
-# productions = {
-#     'S': [['A', 'c']],
-#     'A': [['a', 'A', 'c'], ['B']],
-#     'B': [['b', 'B'], []],  # Epsilon (empty) production for B
-# }
-
-# tabela_slr = getTabela(productions)
-
-# # Print the final table structure
-# import pprint
-# pprint.pprint(tabela_slr)

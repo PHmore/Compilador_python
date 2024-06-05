@@ -133,53 +133,53 @@ class SLRParser:
 #               2: {'left': 'PROGRAMA', 'right': ['DECVAR']},
 #               3: {'left': 'DECVAR', 'right': ['int', 'id', ';']}}}
 
-# productions = {
-#     'S': [['PROGRAMA']],
-#     'PROGRAMA': [['SEÇÃO_FUNÇÕES', 'PRINCIPAL']],
-#     'SEÇÃO_FUNÇÕES': [['LISTA_FUNÇÕES'], ['ε']],
-#     'LISTA_FUNÇÕES': [['DEC_FUNÇÃO'], ['LISTA_FUNÇÕES', 'DEC_FUNÇÃO']],
-#     'DEC_FUNÇÃO': [['TIPO_RETORNO', 'id', '(', 'PARÂMETROS', ')', 'BLOCO']],
-#     'TIPO_RETORNO': [['TIPO'], ['void']],
-#     'TIPO': [['TIPO_BASE', 'DIMENSÃO']],
-#     'TIPO_BASE': [['char'], ['float'], ['int'], ['boolean']],
-#     'DIMENSÃO': [['DIMENSÃO', '[', 'num_int', ']'], ['ε']],
-#     'PARÂMETROS': [['LISTA_PARÂMETROS'], ['ε']],
-#     'LISTA_PARÂMETROS': [['TIPO', 'id'], ['LISTA_PARÂMETROS', ',', 'TIPO', 'id']],
-#     'PRINCIPAL': [['main', '(', ')', 'BLOCO']],
-#     'BLOCO': [['{', 'SEÇÃO_VARIAVEIS', 'SEÇÃO_COMANDOS', '}']],
-#     'SEÇÃO_VARIAVEIS': [['LISTA_VARIAVEIS'], ['ε']],
-#     'LISTA_VARIAVEIS': [['TIPO', 'LISTA_ID', ';'], ['LISTA_VARIAVEIS', 'TIPO', 'LISTA_ID', ';']],
-#     'LISTA_ID': [['identificador'], ['LISTA_ID', ',', 'identificador']],
-#     'SEÇÃO_COMANDOS': [['LISTA_COMANDOS'], ['ε']],
-#     'LISTA_COMANDOS': [['COMANDO'], ['LISTA_COMANDOS', 'COMANDO']],
-#     'COMANDO': [['LEITURA'], ['ESCRITA'], ['ATRIBUIÇÃO'], ['FUNÇÃO'], ['SELEÇÃO'], ['ENQUANTO'], ['RETORNO']],
-#     'LEITURA': [['scanf', '(', 'LISTA_TERMO_LEITURA', ')', ';']],
-#     'LISTA_TERMO_LEITURA': [['TERMO_LEITURA'], ['LISTA_TERMO_LEITURA', ',', 'TERMO_LEITURA']],
-#     'TERMO_LEITURA': [['id', 'DIMENSAO2']],
-#     'DIMENSAO2': [['DIMENSAO2', '[', 'EXPR_ADITIVA', ']', 'ε']],
-#     'ESCRITA': [['println', '(', 'LISTA_TERMO_ESCRITA', ')', ';']],
-#     'LISTA_TERMO_ESCRITA': [['TERMO_ESCRITA'], ['LISTA_TERMO_ESCRITA', ',', 'TERMO_ESCRITA']],
-#     'TERMO_ESCRITA': [['id', 'DIMENSAO2'], ['CONSTANTE'], ['texto']],
-#     'SELEÇÃO': [['if', '(', 'EXPRESSÃO', ')', 'BLOCO', 'SENÃO']],
-#     'SENÃO': [['else', 'BLOCO'], ['ε']],
-#     'ENQUANTO': [['while', '(', 'EXPRESSÃO', ')', 'BLOCO']],
-#     'ATRIBUIÇÃO': [['id', '=', 'COMPLEMENTO', ';']],
-#     'COMPLEMENTO': [['EXPRESSÃO'], ['FUNÇÃO']],
-#     'FUNÇÃO': [['func', 'id', '(', 'ARGUMENTOS', ')']],
-#     'ARGUMENTOS': [['LISTA_ARGUMENTOS'], ['ε']],
-#     'LISTA_ARGUMENTOS': [['EXPRESSÃO'], ['LISTA_ARGUMENTOS', ',', 'EXPRESSÃO']],
-#     'RETORNO': [['return', 'EXPRESSÃO', ';']],
-#     'EXPRESSÃO': [['EXPR_OU']],
-#     'EXPR_OU': [['EXPR_E'], ['EXPR_OU', '||', 'EXPR_E']],
-#     'EXPR_E': [['EXPR_RELACIONAL'], ['EXPR_E', '&&', 'EXPR_RELACIONAL']],
-#     'EXPR_RELACIONAL': [['EXPR_ADITIVA'], ['EXPR_ADITIVA', 'opRelacional', 'EXPR_ADITIVA']],
-#     'EXPR_ADITIVA': [['EXPR_MULTIPLICATIVA'], ['EXPR_ADITIVA', 'OP_ADITIVO', 'EXPR_MULTIPLICATIVA']],
-#     'OP_ADITIVO': [['+'], ['-']],
-#     'EXPR_MULTIPLICATIVA': [['FATOR'], ['EXPR_MULTIPLICATIVA', 'OP_MULTIPLICATIVO', 'FATOR']],
-#     'OP_MULTIPLICATIVO': [['*'], ['/'], ['%']],
-#     'FATOR': [['SINAL', 'identificador', 'DIMENSAO2'],['SINAL' ,'CONSTANTE'], ['texto'],['FATOR'],['(','EXPRESSÃO',')']],
-#     'SINAL': [['+'],['-'],['ε']],
-# }
+productions = {
+    'S': [['PROGRAMA']],
+    'PROGRAMA': [['SEÇÃO_FUNÇÕES', 'PRINCIPAL']],
+    'SEÇÃO_FUNÇÕES': [['LISTA_FUNÇÕES'], ['ε']],
+    'LISTA_FUNÇÕES': [['DEC_FUNÇÃO'], ['LISTA_FUNÇÕES', 'DEC_FUNÇÃO']],
+    'DEC_FUNÇÃO': [['TIPO_RETORNO', 'id', '(', 'PARÂMETROS', ')', 'BLOCO']],
+    'TIPO_RETORNO': [['TIPO'], ['void']],
+    'TIPO': [['TIPO_BASE', 'DIMENSÃO']],
+    'TIPO_BASE': [['char'], ['float'], ['int'], ['boolean']],
+    'DIMENSÃO': [['DIMENSÃO', '[', 'num_int', ']'], ['ε']],
+    'PARÂMETROS': [['LISTA_PARÂMETROS'], ['ε']],
+    'LISTA_PARÂMETROS': [['TIPO', 'id'], ['LISTA_PARÂMETROS', ',', 'TIPO', 'id']],
+    'PRINCIPAL': [['main', '(', ')', 'BLOCO']],
+    'BLOCO': [['{', 'SEÇÃO_VARIAVEIS', 'SEÇÃO_COMANDOS', '}']],
+    'SEÇÃO_VARIAVEIS': [['LISTA_VARIAVEIS'], ['ε']],
+    'LISTA_VARIAVEIS': [['TIPO', 'LISTA_ID', ';'], ['LISTA_VARIAVEIS', 'TIPO', 'LISTA_ID', ';']],
+    'LISTA_ID': [['identificador'], ['LISTA_ID', ',', 'identificador']],
+    'SEÇÃO_COMANDOS': [['LISTA_COMANDOS'], ['ε']],
+    'LISTA_COMANDOS': [['COMANDO'], ['LISTA_COMANDOS', 'COMANDO']],
+    'COMANDO': [['LEITURA'], ['ESCRITA'], ['ATRIBUIÇÃO'], ['FUNÇÃO'], ['SELEÇÃO'], ['ENQUANTO'], ['RETORNO']],
+    'LEITURA': [['scanf', '(', 'LISTA_TERMO_LEITURA', ')', ';']],
+    'LISTA_TERMO_LEITURA': [['TERMO_LEITURA'], ['LISTA_TERMO_LEITURA', ',', 'TERMO_LEITURA']],
+    'TERMO_LEITURA': [['id', 'DIMENSAO2']],
+    'DIMENSAO2': [['DIMENSAO2', '[', 'EXPR_ADITIVA', ']', 'ε']],
+    'ESCRITA': [['println', '(', 'LISTA_TERMO_ESCRITA', ')', ';']],
+    'LISTA_TERMO_ESCRITA': [['TERMO_ESCRITA'], ['LISTA_TERMO_ESCRITA', ',', 'TERMO_ESCRITA']],
+    'TERMO_ESCRITA': [['id', 'DIMENSAO2'], ['CONSTANTE'], ['texto']],
+    'SELEÇÃO': [['if', '(', 'EXPRESSÃO', ')', 'BLOCO', 'SENÃO']],
+    'SENÃO': [['else', 'BLOCO'], ['ε']],
+    'ENQUANTO': [['while', '(', 'EXPRESSÃO', ')', 'BLOCO']],
+    'ATRIBUIÇÃO': [['id', '=', 'COMPLEMENTO', ';']],
+    'COMPLEMENTO': [['EXPRESSÃO'], ['FUNÇÃO']],
+    'FUNÇÃO': [['func', 'id', '(', 'ARGUMENTOS', ')']],
+    'ARGUMENTOS': [['LISTA_ARGUMENTOS'], ['ε']],
+    'LISTA_ARGUMENTOS': [['EXPRESSÃO'], ['LISTA_ARGUMENTOS', ',', 'EXPRESSÃO']],
+    'RETORNO': [['return', 'EXPRESSÃO', ';']],
+    'EXPRESSÃO': [['EXPR_OU']],
+    'EXPR_OU': [['EXPR_E'], ['EXPR_OU', '||', 'EXPR_E']],
+    'EXPR_E': [['EXPR_RELACIONAL'], ['EXPR_E', '&&', 'EXPR_RELACIONAL']],
+    'EXPR_RELACIONAL': [['EXPR_ADITIVA'], ['EXPR_ADITIVA', 'opRelacional', 'EXPR_ADITIVA']],
+    'EXPR_ADITIVA': [['EXPR_MULTIPLICATIVA'], ['EXPR_ADITIVA', 'OP_ADITIVO', 'EXPR_MULTIPLICATIVA']],
+    'OP_ADITIVO': [['+'], ['-']],
+    'EXPR_MULTIPLICATIVA': [['FATOR'], ['EXPR_MULTIPLICATIVA', 'OP_MULTIPLICATIVO', 'FATOR']],
+    'OP_MULTIPLICATIVO': [['*'], ['/'], ['%']],
+    'FATOR': [['SINAL', 'identificador', 'DIMENSAO2'],['SINAL' ,'CONSTANTE'], ['texto'],['FATOR'],['(','EXPRESSÃO',')']],
+    'SINAL': [['+'],['-'],['ε']],
+}
 
 """
 Léxico
@@ -195,7 +195,13 @@ self.accepting = {1: 'IDENTIFIER', 2: 'INTEGER', 4: 'IDENTIFIER_ERROR', 5: 'FLOA
                                'static', 'const', 'volatile', 'extern', 'register', 'auto', 'signed', 'unsigned', 'do',
                                'short', 'long', 'printf', 'define', 'include', 'scanf']
 Exemplo:
-<#, > <include, > <LIBRARY, <stdio.h>> <\n,  > <#, > <include, > <LIBRARY, <stdlib.h>> <\n,  > <\n,  > <int, > <IDENTIFIER, par> <(, > <IDENTIFIER, num> <), > <{, > <\n,  > <if, > <(, > <IDENTIFIER, num> <%, > <INTEGER, 2> <==, > <INTEGER, 0> <), > <\n,  > <return, > <INTEGER, 1> <;, > <COMMENT, // 1 seria o caso verdadeiro
+<#, > <include, > <LIBRARY, <stdio.h>> 
+<\n,  > <#, > <include, > <LIBRARY, <stdlib.h>> 
+<\n,  > 
+<\n,  > 
+<int, > <IDENTIFIER, par> <(, > <IDENTIFIER, num> <), > 
+<{, > <\n,  > 
+<if, > <(, > <IDENTIFIER, num> <%, > <INTEGER, 2> <==, > <INTEGER, 0> <), > <\n,  > <return, > <INTEGER, 1> <;, > <COMMENT, // 1 seria o caso verdadeiro
 > <return, > <INTEGER, 0> <;, > <COMMENT, //0 seria o caso falso
 > <}, > <\n,  > <\n,  > <void, > <main, > <(, > <), > <{, > <\n,  > <int, > <IDENTIFIER, i> <=, > <INTEGER, 5> <;, > <\n,  > <float, > <IDENTIFIER, f> <=, > <FLOAT, 3.45> <;, > <\n,  > <char, > <IDENTIFIER, c> <=, > <CHAR, 'G'> <;, > <\n,  > <\n,  > <printf, > <(, > <IDENTIFIER, par> <(, > <IDENTIFIER, i> <), > <), > <;, > <COMMENT, //mostra o resultado da fun��o par() para i
 > <\n,  > <printf, > <(, > <LITERAL, "Ol�, mundo!"> <), > <;, > <\n,  > <\n,  > <for, > <(, > <int, > <IDENTIFIER, j> <=, > <INTEGER, 0> <;, > <IDENTIFIER, j> <<, > <INTEGER, 5> <;, > <IDENTIFIER, j> <+, > <+, > <), > <{, > <\n,  > <printf, > <(, > <LITERAL, "Compilador"> <,, > <IDENTIFIER, j> <), > <;, > <\n,  > <}, > <\n,  > <}, > <\n,  > 
@@ -205,24 +211,32 @@ Exemplo:
 
 productions = {
     'S': [['PROGRAMA']],
-    'PROGRAMA': [['LIBS','DECVAR','DECFUN']],
-    'LIBS':[['#','include','LIBRARY'],['']],
+    'PROGRAMA': [['LIBS','DECLARACOES']],
+    'DECLARACOES': [['DECLARACAO','DECLARACOESL',],],
+    'DECLARACOESL': [['DECVAR','DECLARACOESL',],['DECFUN','DECLARACOESL',],['DECLARACOES']],
+    'DECLARACAO':[['DECFUN'],['DECVAR'],],
+    'LIBS':[['LIB','LIBS'],['LIB']],
+    'LIB':[['#','include','LIBRARY']],
     'DECVAR': [['DEC',';']],
     'DECFUN': [['DEC','(',')','BLOCO']],
-    'DEC':[['int','id']],
-    'BLOCO': [['{','CODIGO','}']],
-    'CODIGO': [['printf']],
+    'DEC':[['TIPO','id']],
+    'TIPO':[['int'],['char'],['float'],['void']],
+    'BLOCO': [['{','CODIGOS','}']],
+    'CODIGOS': [['printf']],
     }
 
 tabela_slr = makeTablenew.getTabela(productions)
 
 # Tokens de entrada (simplificados para este exemplo)
 # tokens = ['int','identificador', '(', ')', '{', 'int', 'id', ';', 'float', 'id', '[', 'num_int', ']', ';', 'char', 'id', ';', 'boolean', 'id', '=', 'true', ';', 'id', '=', 'num_int', ';', 'id', '=', 'texto', ';', 'if', '(', 'id', '>', 'num_int', ')', '{', 'id', '[', 'num_int', ']', '=', 'num_dec', ';', '}', 'else', '{', 'id', '[', 'num_int', ']', '=', 'num_dec', ';', '}', 'while', '(', 'id', ')', '{', 'id', '--', ';', '}', 'return', 'num_int', ';', '}']
-tokens = ['#','include','LIBRARY','int','id','(',')','{','','}']
-
+tokens = ['#','include','LIBRARY','int','id','(',')','{','printf','}']
+tokens1= ['#','include','LIBRARY','int','id',';']
+tokens2= ['#','include','LIBRARY','int','id',';','int','id','(',')','{','printf','}']
 
 # Cria o analisador sintático SLR
 parser = SLRParser(tabela_slr)
 
 # Realiza a análise sintática
-parser.parse(tokens)
+# parser.parse(tokens)
+# parser.parse(tokens1)
+parser.parse(tokens2)
