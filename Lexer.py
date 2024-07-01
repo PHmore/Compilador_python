@@ -1,6 +1,7 @@
+import re
+
 # Classe TOKEN importada para instanciar os tokens
 from TOKEN import TOKEN
-
 
 # Declaração da classe Lexer
 class Lexer:
@@ -21,7 +22,7 @@ class Lexer:
             3: {'digit': 5},
             4: {'letter': 4, 'digit': 4},
             5: {'digit': 5},
-            9: {'/': 30, '*': 32},
+            9: {'/': 30, '*': 32},#Adicionar um caso de letra por exemplo \n \t
             11: {'=': 10},
             12: {'=': 25, 'letter': 35},
             13: {'=': 26},
@@ -47,13 +48,13 @@ class Lexer:
                  '!': 42, '?': 42},
             44: {'letter': 45}
         }
-        self.accepting = {1: 'IDENTIFIER', 2: 'INTEGER', 4: 'IDENTIFIER_ERROR', 5: 'FLOAT', 6: '+', 7: '-', 8: '*',
+        self.accepting = {1: 'IDENTIFIER', 2: 'INTEGER_LITERAL', 4: 'IDENTIFIER_ERROR', 5: 'FLOAT', 6: '+', 7: '-', 8: '*',
                           9: '/', 10: '==', 11: '=', 12: '<', 13: '>', 14: '(', 15: ')', 16: '{', 17: '}', 18: '[',
                           19: ']', 20: ';', 21: ',', 22: '.', 24: 'LITERAL', 25: '<=', 26: '>=', 28: '!=', 29: '#',
                           31: 'COMMENT', 32: 'COMMENT_ERROR', 34: 'LIBRARY', 35: 'LIBRARY_ERROR', 36: '%', 37: '\\n',
                           38: '\\t', 41: 'CHAR', 42: 'CHAR_ERROR', 43: '&', 45: 'TYPE'
                           }
-        self.reserved_words = ['if', 'else', 'for', 'while', 'int', 'float', 'double', 'char', 'return', 'main', 'void',
+        self.reserved_words = ['if', 'else', 'for', 'while', 'int', 'float', 'double', 'char', 'return', 'void',
                                'switch', 'case', 'break', 'continue', 'typedef', 'struct', 'union', 'enum', 'sizeof',
                                'static', 'const', 'volatile', 'extern', 'register', 'auto', 'signed', 'unsigned', 'do',
                                'short', 'long', 'printf', 'define', 'include', 'scanf']
@@ -80,6 +81,7 @@ class Lexer:
         :param state: estado q em que o autômato se encontra no momento de processamento do valor;
         :param value: valor em processamento, que será adicionado a um token;
         """
+        # print(value)
         if value in self.reserved_words or value in self.accepting.values():
             self.tokens.append(TOKEN(type_token=value))
         else:
@@ -93,14 +95,14 @@ class Lexer:
         """
         state = 0
         value = ''
-
+        code += '\n'
         for char in code + ' ':  # laço que lê caracter por caracter do arquivo
             input_type = self.define_tipo(char)
-
             # Verifica se ainda há estados a serem atingidos a partir do estado atual
             if state in self.transitions and input_type in self.transitions[state]:
                 state = self.transitions[state][input_type]
                 value += char
+                # print("Ainda há estados")
             # Se não houver mais estados a serem atingidos, entra no "else"
             else:
                 # Se o valor (value) armazenado for estado final
