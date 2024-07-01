@@ -140,6 +140,9 @@ class Parser:
                 self.position += 1 # Consome outros tokens por enquanto
     
     def parse_expression(self, start_position):
+        index_atual = self.position
+        if self.position == index_atual and self.tokens[index_atual] == '<}, >':
+            self.error('<code_block>')
         while self.position < len(self.tokens) and self.tokens[self.position] not in ('<;, >', '<), >'):
             if self.tokens[self.position].startswith(('<IDENTIFIER,', '<INTEGER_LITERAL,', '<FLOAT_LITERAL,', '<CHAR_LITERAL,')):
                 self.position += 1

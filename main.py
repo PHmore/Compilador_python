@@ -8,6 +8,9 @@ code = '''int main() {
         return a + b;
     }
     printf("Olá, mundo");
+    for(int c = 0; c < 4; c++){
+        printf("Olá, mundo");
+    }
 }'''
 
 lexer = Lexer()
