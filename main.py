@@ -4,13 +4,7 @@ from Sintax import Parser
 tokens = []
 
 code = '''int main() {
-    int somar(int a, int b){
-        return a + b;
-    }
-    printf("Olá, mundo");
-    for(int c = 0; c < 4; c++){
-        printf("Olá, mundo");
-    }
+    int j = a - b;
 }'''
 
 lexer = Lexer()
