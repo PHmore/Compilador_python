@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'DIVIDE ELSE EQ EQUALS FLOAT FLOAT_TYPE GE GT ID IF INT INTEGER LBRACE LE LPAREN LT MINUS NE PLUS RBRACE RETURN RPAREN SEMICOLON TIMESprogram : type ID LPAREN RPAREN LBRACE statements RBRACEtype : INT\n            | FLOATstatements : statement\n                  | statement statementsstatement : assignment\n                 | return_statement\n                 | if_statementassignment : type ID EQUALS expression SEMICOLONreturn_statement : RETURN expression SEMICOLONif_statement : IF LPAREN expression RPAREN LBRACE statements RBRACEif_statement : IF LPAREN expression RPAREN LBRACE statements RBRACE ELSE LBRACE statements RBRACEexpression : ID\n                  | INTEGER\n                  | FLOAT\n                  | expression LT expression\n                  | expression LE expression\n                  | expression GT expression\n                  | expression GE expression\n                  | expression EQ expression\n                  | expression NE expression'
+_lr_signature = 'DIVIDE EQUALS ID INT INTEGER LPAREN MINUS PLUS RPAREN SEMICOLON TIMESprogram : INT declarations statementsdeclarations : declarations declaration\n                    | declarationdeclaration : INT ID SEMICOLONstatements : statements statement\n                  | statementstatement : ID EQUALS expression SEMICOLONexpression : expression PLUS expression\n                  | expression MINUS expression\n                  | expression TIMES expression\n                  | expression DIVIDE expressionexpression : INTEGER'
     
-_lr_action_items = {'INT':([0,8,11,12,13,14,26,42,43,45,47,49,],[3,3,3,-6,-7,-8,-10,-9,3,-11,3,-12,]),'FLOAT':([0,8,11,12,13,14,15,24,25,26,27,28,29,30,31,32,42,43,45,47,49,],[4,4,4,-6,-7,-8,23,23,23,-10,23,23,23,23,23,23,-9,4,-11,4,-12,]),'$end':([1,18,],[0,-1,]),'ID':([2,3,4,9,15,24,25,27,28,29,30,31,32,],[5,-2,-3,17,21,21,21,21,21,21,21,21,21,]),'LPAREN':([5,16,],[6,24,]),'RPAREN':([6,21,22,23,33,35,36,37,38,39,40,],[7,-13,-14,-15,41,-16,-17,-18,-19,-20,-21,]),'LBRACE':([7,41,46,],[8,43,47,]),'RETURN':([8,11,12,13,14,26,42,43,45,47,49,],[15,15,-6,-7,-8,-10,-9,15,-11,15,-12,]),'IF':([8,11,12,13,14,26,42,43,45,47,49,],[16,16,-6,-7,-8,-10,-9,16,-11,16,-12,]),'RBRACE':([10,11,12,13,14,19,26,42,44,45,48,49,],[18,-4,-6,-7,-8,-5,-10,-9,45,-11,49,-12,]),'INTEGER':([15,24,25,27,28,29,30,31,32,],[22,22,22,22,22,22,22,22,22,]),'EQUALS':([17,],[25,]),'SEMICOLON':([20,21,22,23,34,35,36,37,38,39,40,],[26,-13,-14,-15,42,-16,-17,-18,-19,-20,-21,]),'LT':([20,21,22,23,33,34,35,36,37,38,39,40,],[27,-13,-14,-15,27,27,27,27,27,27,27,27,]),'LE':([20,21,22,23,33,34,35,36,37,38,39,40,],[28,-13,-14,-15,28,28,28,28,28,28,28,28,]),'GT':([20,21,22,23,33,34,35,36,37,38,39,40,],[29,-13,-14,-15,29,29,29,29,29,29,29,29,]),'GE':([20,21,22,23,33,34,35,36,37,38,39,40,],[30,-13,-14,-15,30,30,30,30,30,30,30,30,]),'EQ':([20,21,22,23,33,34,35,36,37,38,39,40,],[31,-13,-14,-15,31,31,31,31,31,31,31,31,]),'NE':([20,21,22,23,33,34,35,36,37,38,39,40,],[32,-13,-14,-15,32,32,32,32,32,32,32,32,]),'ELSE':([45,],[46,]),}
+_lr_action_items = {'INT':([0,2,4,5,8,11,],[2,3,3,-3,-2,-4,]),'$end':([1,7,9,12,16,],[0,-1,-6,-5,-7,]),'ID':([3,4,5,7,8,9,11,12,16,],[6,10,-3,10,-2,-6,-4,-5,-7,]),'SEMICOLON':([6,14,15,21,22,23,24,],[11,16,-12,-8,-9,-10,-11,]),'EQUALS':([10,],[13,]),'INTEGER':([13,17,18,19,20,],[15,15,15,15,15,]),'PLUS':([14,15,21,22,23,24,],[17,-12,17,17,17,17,]),'MINUS':([14,15,21,22,23,24,],[18,-12,18,18,18,18,]),'TIMES':([14,15,21,22,23,24,],[19,-12,19,19,19,19,]),'DIVIDE':([14,15,21,22,23,24,],[20,-12,20,20,20,20,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'program':([0,],[1,]),'type':([0,8,11,43,47,],[2,9,9,9,9,]),'statements':([8,11,43,47,],[10,19,44,48,]),'statement':([8,11,43,47,],[11,11,11,11,]),'assignment':([8,11,43,47,],[12,12,12,12,]),'return_statement':([8,11,43,47,],[13,13,13,13,]),'if_statement':([8,11,43,47,],[14,14,14,14,]),'expression':([15,24,25,27,28,29,30,31,32,],[20,33,34,35,36,37,38,39,40,]),}
+_lr_goto_items = {'program':([0,],[1,]),'declarations':([2,],[4,]),'declaration':([2,4,],[5,8,]),'statements':([4,],[7,]),'statement':([4,7,],[9,12,]),'expression':([13,17,18,19,20,],[14,21,22,23,24,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -27,25 +27,16 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> program","S'",1,None,None,None),
-  ('program -> type ID LPAREN RPAREN LBRACE statements RBRACE','program',7,'p_program','sintax.py',75),
-  ('type -> INT','type',1,'p_type','sintax.py',79),
-  ('type -> FLOAT','type',1,'p_type','sintax.py',80),
-  ('statements -> statement','statements',1,'p_statements','sintax.py',84),
-  ('statements -> statement statements','statements',2,'p_statements','sintax.py',85),
-  ('statement -> assignment','statement',1,'p_statement','sintax.py',89),
-  ('statement -> return_statement','statement',1,'p_statement','sintax.py',90),
-  ('statement -> if_statement','statement',1,'p_statement','sintax.py',91),
-  ('assignment -> type ID EQUALS expression SEMICOLON','assignment',5,'p_assignment','sintax.py',95),
-  ('return_statement -> RETURN expression SEMICOLON','return_statement',3,'p_return_statement','sintax.py',99),
-  ('if_statement -> IF LPAREN expression RPAREN LBRACE statements RBRACE','if_statement',7,'p_if_statement','sintax.py',103),
-  ('if_statement -> IF LPAREN expression RPAREN LBRACE statements RBRACE ELSE LBRACE statements RBRACE','if_statement',11,'p_if_else_statement','sintax.py',107),
-  ('expression -> ID','expression',1,'p_expression','sintax.py',111),
-  ('expression -> INTEGER','expression',1,'p_expression','sintax.py',112),
-  ('expression -> FLOAT','expression',1,'p_expression','sintax.py',113),
-  ('expression -> expression LT expression','expression',3,'p_expression','sintax.py',114),
-  ('expression -> expression LE expression','expression',3,'p_expression','sintax.py',115),
-  ('expression -> expression GT expression','expression',3,'p_expression','sintax.py',116),
-  ('expression -> expression GE expression','expression',3,'p_expression','sintax.py',117),
-  ('expression -> expression EQ expression','expression',3,'p_expression','sintax.py',118),
-  ('expression -> expression NE expression','expression',3,'p_expression','sintax.py',119),
+  ('program -> INT declarations statements','program',3,'p_program','Lexer.py',50),
+  ('declarations -> declarations declaration','declarations',2,'p_declarations','Lexer.py',54),
+  ('declarations -> declaration','declarations',1,'p_declarations','Lexer.py',55),
+  ('declaration -> INT ID SEMICOLON','declaration',3,'p_declaration','Lexer.py',62),
+  ('statements -> statements statement','statements',2,'p_statements','Lexer.py',66),
+  ('statements -> statement','statements',1,'p_statements','Lexer.py',67),
+  ('statement -> ID EQUALS expression SEMICOLON','statement',4,'p_statement_assign','Lexer.py',74),
+  ('expression -> expression PLUS expression','expression',3,'p_expression_binop','Lexer.py',78),
+  ('expression -> expression MINUS expression','expression',3,'p_expression_binop','Lexer.py',79),
+  ('expression -> expression TIMES expression','expression',3,'p_expression_binop','Lexer.py',80),
+  ('expression -> expression DIVIDE expression','expression',3,'p_expression_binop','Lexer.py',81),
+  ('expression -> INTEGER','expression',1,'p_expression_integer','Lexer.py',85),
 ]
