@@ -242,35 +242,38 @@ class Tradutor:
         return '    ' * self.indent_level + line + end
 
 
-tokens = [
+tokens_exemplo1 = [
     '<RESERVED_WORD, void>', '<IDENTIFIER, minhaFuncao>', '<DELIMITER, (>', '<DELIMITER, )>', '<DELIMITER, {>',
         '<RESERVED_WORD, int>', '<IDENTIFIER, x>', '<OPERADOR_ATRIBUICAO, =>', '<INTEGER_LITERAL, 10>', '<;, >',
         '<RESERVED_WORD, printf>', '<DELIMITER, (>', '<LITERAL, "Valor de x: " + x>', '<DELIMITER, ,>', '<IDENTIFIER, x>', '<DELIMITER, )>', '<;, >',
     '<DELIMITER, }>',
 
     '<RESERVED_WORD, void>', '<RESERVED_WORD, main>', '<DELIMITER, (>', '<DELIMITER, )>', '<DELIMITER, {>',
-        '<RESERVED_WORD, int>', '<IDENTIFIER, numero>', '<OPERADOR_ATRIBUICAO, =>', '<INTEGER_LITERAL, 0>', '<;, >',
-        '<RESERVED_WORD, char>', '<IDENTIFIER, letra>', '<OPERADOR_ATRIBUICAO, =>', '<LITERAL, "K">', '<;, >',
+        '<RESERVED_WORD, int>', '<IDENTIFIER, n>', '<OPERADOR_ATRIBUICAO, =>', '<INTEGER_LITERAL, 0>', '<;, >',
 
-        '<RESERVED_WORD, printf>', '<DELIMITER, (>', '<LITERAL, "A letra é " + letra>', '<DELIMITER, )>', '<;, >',
-
-        '<RESERVED_WORD, if>', '<DELIMITER, (>', '<IDENTIFIER, numero>', '<OPERADOR_RELACIONAL, ==>', '<INTEGER_LITERAL, 0>', '<DELIMITER, )>', '<DELIMITER, {>',
+        '<RESERVED_WORD, if>', '<DELIMITER, (>', '<IDENTIFIER, n>', '<OPERADOR_RELACIONAL, ==>', '<INTEGER_LITERAL, 0>', '<DELIMITER, )>', '<DELIMITER, {>',
             '<RESERVED_WORD, printf>', '<DELIMITER, (>', '<LITERAL, "O número é zero!">', '<DELIMITER, )>', '<;, >',
         '<DELIMITER, }>', '<RESERVED_WORD, else>', '<DELIMITER, {>',
             '<RESERVED_WORD, printf>', '<DELIMITER, (>', '<LITERAL, "O número não é zero...">', '<DELIMITER, )>', '<;, >',
         '<DELIMITER, }>',
-        '<RESERVED_WORD, for>', '<DELIMITER, (>', '<RESERVED_WORD, int>', '<IDENTIFIER, i>', '<OPERADOR_ATRIBUICAO, =>', '<INTEGER_LITERAL, 0>', '<DELIMITER, ;>',
-        '<IDENTIFIER, i>', '<OPERADOR_RELACIONAL, <>', '<INTEGER_LITERAL, 5>', '<DELIMITER, ;>',
-        '<IDENTIFIER, i>', '<OPERADOR_ARITMETICO, ++>', '<DELIMITER, )>', '<DELIMITER, {>',
-            '<RESERVED_WORD, printf>', '<DELIMITER, (>', '<LITERAL, "Hello World (for)">', '<DELIMITER, )>','<;, >',
-        '<DELIMITER, }>',
-        '<RESERVED_WORD, while>', '<DELIMITER, (>', '<IDENTIFIER, numero>', '<OPERADOR_RELACIONAL, <>', '<INTEGER_LITERAL, 5>', '<DELIMITER, )>', '<DELIMITER, {>',
+
+        '<RESERVED_WORD, while>', '<DELIMITER, (>', '<IDENTIFIER, n>', '<OPERADOR_RELACIONAL, <>', '<INTEGER_LITERAL, 5>', '<DELIMITER, )>', '<DELIMITER, {>',
             '<RESERVED_WORD, printf>', '<DELIMITER, (>', '<LITERAL, "Hello world (while)">', '<DELIMITER, )>', '<;, >',
-            '<IDENTIFIER, numero>', '<OPERADOR_ARITMETICO, ++>', '<;, >',
+            '<IDENTIFIER, n>', '<OPERADOR_ARITMETICO, ++>', '<;, >',
         '<DELIMITER, }>',
     '<DELIMITER, }>',
 ]
 
-tradutor = Tradutor(tokens)
+tokens_exemplo2 = [
+    '<RESERVED_WORD, void>', '<RESERVED_WORD, main>', '<DELIMITER, (>', '<DELIMITER, )>', '<DELIMITER, {>',
+        '<RESERVED_WORD, char>', '<IDENTIFIER, letra>', '<OPERADOR_ATRIBUICAO, =>', '<LITERAL, "K">', '<;, >',
+
+        '<RESERVED_WORD, if>', '<DELIMITER, (>', '<IDENTIFIER, letra>', '<OPERADOR_RELACIONAL, ==>', '<INTEGER_LITERAL, "K">', '<DELIMITER, )>', '<DELIMITER, {>',
+            '<RESERVED_WORD, printf>', '<DELIMITER, (>', '<LITERAL, "A letra é K">', '<DELIMITER, )>', '<DELIMITER, ;>',
+        '<DELIMITER, }>', '<RESERVED_WORD, else>', '<DELIMITER, {>',
+            '<RESERVED_WORD, printf>', '<DELIMITER, (>', '<LITERAL, "A letra é " + letra>', '<DELIMITER, )>', '<DELIMITER, ;>',
+        '<DELIMITER, }>',
+]
+tradutor = Tradutor(tokens_exemplo2)
 codigo_python = tradutor.traduzir()
 print(codigo_python)
