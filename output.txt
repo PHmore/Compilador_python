@@ -1,1 +1,0 @@
-['#','include','LIBRARY','\n','\n','\n','int','IDENTIFIER',';','\n','\n','void','main','(','void',')','{','\n','\n','if','(','INTEGER','==','INTEGER',')','\n','{','\n','IDENTIFIER','+','+',';','\n','}','else','\n','{','\n','printf','(','LITERAL',')',';','\n','}','\n','}','\n','COMMENT',]

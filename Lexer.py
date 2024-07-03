@@ -48,13 +48,13 @@ class Lexer:
                  '!': 42, '?': 42},
             44: {'letter': 45}
         }
-        self.accepting = {1: 'IDENTIFIER', 2: 'INTEGER', 4: 'IDENTIFIER_ERROR', 5: 'FLOAT', 6: '+', 7: '-', 8: '*',
+        self.accepting = {1: 'IDENTIFIER', 2: 'INTEGER_LITERAL', 4: 'IDENTIFIER_ERROR', 5: 'FLOAT', 6: '+', 7: '-', 8: '*',
                           9: '/', 10: '==', 11: '=', 12: '<', 13: '>', 14: '(', 15: ')', 16: '{', 17: '}', 18: '[',
                           19: ']', 20: ';', 21: ',', 22: '.', 24: 'LITERAL', 25: '<=', 26: '>=', 28: '!=', 29: '#',
                           31: 'COMMENT', 32: 'COMMENT_ERROR', 34: 'LIBRARY', 35: 'LIBRARY_ERROR', 36: '%', 37: '\\n',
                           38: '\\t', 41: 'CHAR', 42: 'CHAR_ERROR', 43: '&', 45: 'TYPE'
                           }
-        self.reserved_words = ['if', 'else', 'for', 'while', 'int', 'float', 'double', 'char', 'return', 'main', 'void',
+        self.reserved_words = ['if', 'else', 'for', 'while', 'int', 'float', 'double', 'char', 'return', 'void',
                                'switch', 'case', 'break', 'continue', 'typedef', 'struct', 'union', 'enum', 'sizeof',
                                'static', 'const', 'volatile', 'extern', 'register', 'auto', 'signed', 'unsigned', 'do',
                                'short', 'long', 'printf', 'define', 'include', 'scanf']
@@ -98,7 +98,6 @@ class Lexer:
         code += '\n'
         for char in code + ' ':  # laço que lê caracter por caracter do arquivo
             input_type = self.define_tipo(char)
-            print(state," :Estado e valor: ",value);
             # Verifica se ainda há estados a serem atingidos a partir do estado atual
             if state in self.transitions and input_type in self.transitions[state]:
                 state = self.transitions[state][input_type]
